@@ -1,0 +1,954 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clinical Mind AI 教師手冊</title>
+<style>
+:root{
+  --bg:#FAFAF9; --surface:#FFFFFF; --surface-2:#F1F3F5; --surface-3:#F7F8F9;
+  --ink:#1C2430; --ink-2:#55606E; --ink-3:#87919C;
+  --line:#DFE2E6; --line-2:#C7CDD4;
+  --accent:#1B4D89; --accent-soft:#E8EEF7; --accent-line:#B9CCE4;
+  --warn:#8A5416; --warn-soft:#FAF1E2; --warn-line:#E5D0AC;
+  --stop:#8E2F2F; --stop-soft:#F9EAEA; --stop-line:#E3C3C3;
+  --ok:#1F6144; --ok-soft:#E6F1EC; --ok-line:#B6D5C7;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13171B; --surface:#1B2127; --surface-2:#232A32; --surface-3:#181E23;
+    --ink:#E2E7EB; --ink-2:#AAB4BE; --ink-3:#7C8792;
+    --line:#2B333B; --line-2:#3C4650;
+    --accent:#7EB0E6; --accent-soft:#17293D; --accent-line:#2E4A6B;
+    --warn:#D9A45E; --warn-soft:#31281A; --warn-line:#4C3E24;
+    --stop:#DE8888; --stop-soft:#331E1E; --stop-line:#4E2E2E;
+    --ok:#6FBF97; --ok-soft:#152A22; --ok-line:#254136;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13171B; --surface:#1B2127; --surface-2:#232A32; --surface-3:#181E23;
+  --ink:#E2E7EB; --ink-2:#AAB4BE; --ink-3:#7C8792;
+  --line:#2B333B; --line-2:#3C4650;
+  --accent:#7EB0E6; --accent-soft:#17293D; --accent-line:#2E4A6B;
+  --warn:#D9A45E; --warn-soft:#31281A; --warn-line:#4C3E24;
+  --stop:#DE8888; --stop-soft:#331E1E; --stop-line:#4E2E2E;
+  --ok:#6FBF97; --ok-soft:#152A22; --ok-line:#254136;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC",system-ui,sans-serif;
+  font-size:15.5px;line-height:1.78;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-line)}
+a:hover{border-bottom-color:currentColor}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.doc{display:grid;grid-template-columns:252px minmax(0,1fr);gap:0;max-width:1220px;margin:0 auto;
+  align-items:start}
+@media (max-width:940px){.doc{grid-template-columns:1fr}}
+
+/* ---- sidebar ---- */
+.side{position:sticky;top:0;max-height:100vh;overflow:auto;padding:30px 22px 40px 24px;
+  border-right:1px solid var(--line);font-size:13.5px}
+@media (max-width:940px){.side{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line);padding:22px 20px}}
+.side .mark{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:4px}
+.side .dt{font-weight:700;font-size:15px;line-height:1.4;margin-bottom:16px;color:var(--ink)}
+.side nav ol{list-style:none;margin:0;padding:0}
+.side nav > ol > li{margin-bottom:1px}
+.side nav a{display:grid;grid-template-columns:26px 1fr;gap:6px;padding:4px 6px;border-radius:4px;
+  color:var(--ink-2);border-bottom:0;line-height:1.45}
+.side nav a:hover{background:var(--surface-2);color:var(--ink)}
+.side nav a .sn{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);padding-top:2px}
+.side .sub{list-style:none;margin:0 0 4px;padding:0 0 0 32px}
+.side .sub a{display:block;grid-template-columns:none;font-size:12.5px;padding:2px 6px;color:var(--ink-3)}
+.side .meta{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);
+  color:var(--ink-3);font-size:11.5px;line-height:1.65;font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace}
+
+/* ---- content ---- */
+main{padding:36px 44px 110px;min-width:0}
+@media (max-width:940px){main{padding:26px 20px 80px}}
+.col{max-width:70ch}
+
+.masthead{border-bottom:2px solid var(--ink);padding-bottom:20px;margin-bottom:30px}
+.masthead .kicker{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);font-weight:600}
+.masthead h1{font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC",system-ui,sans-serif;font-weight:700;font-size:33px;line-height:1.3;
+  margin:10px 0 10px;letter-spacing:-.005em}
+.masthead .stand{font-size:16.5px;color:var(--ink-2);max-width:56ch;margin:0}
+.masthead .bib{display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:18px;
+  font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3)}
+.masthead .bib b{color:var(--ink-2);font-weight:500}
+
+h2{font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC",system-ui,sans-serif;font-size:24px;font-weight:700;
+  line-height:1.34;margin:0 0 4px;letter-spacing:-.005em;text-wrap:balance;
+  display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline}
+h2 .n{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:14px;font-weight:600;color:var(--accent);
+  letter-spacing:.02em}
+h3{font-size:17.5px;font-weight:700;margin:26px 0 6px;line-height:1.45;
+  display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline}
+h3 .n{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;color:var(--ink-3)}
+h4{font-size:15px;font-weight:700;margin:18px 0 4px}
+section.sec{padding-top:34px;margin-bottom:8px;border-top:1px solid var(--line)}
+section.sec:first-of-type{border-top:0;padding-top:0}
+.purpose{font-size:16px;color:var(--ink-2);margin:8px 0 18px;max-width:62ch}
+p{margin:0 0 12px}
+ul,ol{margin:0 0 14px;padding-left:1.4em}
+li{margin-bottom:5px}
+li::marker{color:var(--ink-3)}
+
+code,.ui{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:.88em;background:var(--surface-2);
+  padding:1px 6px;border-radius:3px;color:var(--ink);white-space:nowrap}
+.ui{color:var(--accent);background:var(--accent-soft)}
+
+/* ---- procedure steps ---- */
+ol.steps{list-style:none;padding:0;margin:14px 0 20px;counter-reset:s}
+ol.steps > li{counter-increment:s;position:relative;padding:0 0 18px 46px;
+  border-left:1px solid var(--line);margin-left:12px;margin-bottom:0}
+ol.steps > li:last-child{border-left-color:transparent;padding-bottom:2px}
+ol.steps > li::before{content:counter(s);position:absolute;left:-13px;top:0;
+  width:26px;height:26px;border-radius:50%;background:var(--surface);
+  border:1px solid var(--accent-line);color:var(--accent);
+  font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;
+  display:flex;align-items:center;justify-content:center}
+ol.steps .sh{font-weight:700;font-size:16px;margin-bottom:3px;line-height:1.45}
+ol.steps p{margin:0 0 6px;color:var(--ink-2)}
+ol.steps ul{margin:4px 0 6px}
+ol.steps li li{color:var(--ink-2);font-size:14.5px}
+.ref{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3)}
+.ref a{border-bottom-color:var(--line-2)}
+.est{display:inline-block;font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:11px;
+  background:var(--surface-2);color:var(--ink-3);padding:1px 7px;border-radius:3px;
+  margin-left:8px;vertical-align:middle;font-weight:500}
+
+/* ---- callouts ---- */
+.note{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--surface-3);
+  border-radius:0 6px 6px 0;padding:13px 17px;margin:16px 0}
+.note.warn{border-left-color:var(--warn);background:var(--warn-soft);border-color:var(--warn-line)}
+.note.stop{border-left-color:var(--stop);background:var(--stop-soft);border-color:var(--stop-line)}
+.note.ok{border-left-color:var(--ok);background:var(--ok-soft);border-color:var(--ok-line)}
+.note .lb{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:600;color:var(--accent);margin-bottom:5px}
+.note.warn .lb{color:var(--warn)} .note.stop .lb{color:var(--stop)} .note.ok .lb{color:var(--ok)}
+.note p:last-child,.note ul:last-child{margin-bottom:0}
+
+/* ---- tables ---- */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface);margin:14px 0 18px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:520px}
+th,td{padding:9px 13px;text-align:left;vertical-align:top;border-top:1px solid var(--line)}
+thead th{border-top:0;background:var(--surface-2);font-size:12.5px;font-weight:600;
+  color:var(--ink-2);letter-spacing:.03em;white-space:nowrap}
+td.m{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:13.5px}
+tbody tr:hover{background:var(--surface-3)}
+table.pick td:first-child{font-weight:600;white-space:nowrap}
+
+/* ---- definition list ---- */
+dl.fields{display:grid;grid-template-columns:max-content 1fr;gap:7px 20px;margin:12px 0 18px;font-size:15px}
+dl.fields dt{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:13px;color:var(--accent);padding-top:3px;white-space:nowrap}
+dl.fields dd{margin:0;color:var(--ink-2)}
+
+/* ---- video index ---- */
+ul.vids{list-style:none;padding:0;margin:8px 0 18px}
+ul.vids li{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;
+  padding:6px 0;border-bottom:1px solid var(--line);margin:0;font-size:14.5px}
+ul.vids li:first-child{border-top:1px solid var(--line)}
+ul.vids .tag{font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);white-space:nowrap}
+
+.chip{display:inline-block;font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace;font-size:11.5px;
+  padding:2px 9px;border-radius:3px;background:var(--surface-2);color:var(--ink-2);margin:0 4px 4px 0}
+.chip.a{background:var(--accent-soft);color:var(--accent);font-weight:600}
+
+.xref{font-size:13.5px;color:var(--ink-3);font-family:Consolas,"Cascadia Mono","IBM Plex Mono",monospace}
+.endnote{margin-top:44px;padding-top:16px;border-top:2px solid var(--ink);
+  font-size:13px;color:var(--ink-3);max-width:70ch}
+
+@media print{
+  .side{display:none}
+  .doc{display:block;max-width:none}
+  main{padding:0}
+  section.sec{page-break-inside:auto}
+  h2{page-break-after:avoid}
+  a{color:inherit;border:0}
+}
+
+/* ---- 內嵌影片(v2) ---- */
+.vid{border:1px solid var(--line);border-radius:6px;background:var(--surface);margin:12px 0 16px;overflow:hidden}
+.vid .vh{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;padding:8px 12px;background:var(--surface-2);font-size:13.5px}
+.vid .vn{font-family:Consolas,"Cascadia Mono",monospace;font-size:11.5px;font-weight:600;color:var(--accent);letter-spacing:.04em}
+.vid .vd{font-family:Consolas,"Cascadia Mono",monospace;font-size:11.5px;color:var(--ink-3)}
+.vid .vt{font-family:Consolas,"Cascadia Mono",monospace;font-size:12px;border:1px solid var(--accent-line);background:var(--accent-soft);
+  color:var(--accent);padding:1px 8px;border-radius:3px;cursor:pointer;border-bottom:1px solid var(--accent-line)}
+.vid .vt:hover{background:var(--accent);color:#fff}
+.vid .yt{font-size:11.5px;color:var(--ink-3);margin-left:auto}
+.vid video{display:block;width:100%;max-height:540px;background:#000}
+.vid video[hidden]{display:none}
+.vid .vp{padding:6px 12px;font-size:13px;color:var(--ink-2)}
+.fine{font-size:12.5px;color:var(--ink-3)}
+</style>
+
+<div class="doc">
+<aside class="side">
+  <div class="mark">教師手冊</div>
+  <div class="dt">Clinical Mind AI</div>
+  <nav aria-label="目錄">
+    <ol>
+      <li><a href="#s0"><span class="sn">§0</span><span>這份手冊怎麼用</span></a></li>
+      <li><a href="#s1"><span class="sn">§1</span><span>開始之前</span></a>
+        <ul class="sub">
+          <li><a href="#s1-1">1.1 三種角色</a></li>
+          <li><a href="#s1-2">1.2 取得帳號</a></li>
+          <li><a href="#s1-3">1.3 四層結構</a></li>
+        </ul>
+      </li>
+      <li><a href="#s2"><span class="sn">§2</span><span>快速上手:第一個活動</span></a></li>
+      <li><a href="#s3"><span class="sn">§3</span><span>建立患者</span></a>
+        <ul class="sub">
+          <li><a href="#s3-1">3.1 選擇建立方式</a></li>
+          <li><a href="#s3-2">3.2 表單的 10 個步驟</a></li>
+          <li><a href="#s3-3">3.3 理學檢查與醫學檢查</a></li>
+          <li><a href="#s3-4">3.4 多媒體資料庫</a></li>
+        </ul>
+      </li>
+      <li><a href="#s4"><span class="sn">§4</span><span>建立評分量表</span></a></li>
+      <li><a href="#s5"><span class="sn">§5</span><span>組裝臨床案例活動</span></a>
+        <ul class="sub">
+          <li><a href="#s5-1">5.1 章節與題型</a></li>
+          <li><a href="#s5-2">5.2 回饋設定</a></li>
+          <li><a href="#s5-3">5.3 審核與傳送回饋</a></li>
+        </ul>
+      </li>
+      <li><a href="#s6"><span class="sn">§6</span><span>編入課程</span></a></li>
+      <li><a href="#s7"><span class="sn">§7</span><span>查看學生表現</span></a></li>
+      <li><a href="#s8"><span class="sn">§8</span><span>分享與複用</span></a></li>
+      <li><a href="#s9"><span class="sn">§9</span><span>機構管理員</span></a></li>
+      <li><a href="#s10"><span class="sn">§10</span><span>已知限制</span></a></li>
+      <li><a href="#s11"><span class="sn">§11</span><span>疑難排解</span></a></li>
+      <li><a href="#a"><span class="sn">附錄</span><span>影片索引 · 名詞 · 聯絡</span></a></li>
+    </ol>
+  </nav>
+  <div class="meta">版本 2026-09-17 v2<br>依 2026-09-12 至 09-17 實機驗證<br>非史丹佛官方文件</div>
+</aside>
+
+<main>
+<div class="col">
+
+<div class="masthead">
+  <div class="kicker">Instructor Manual · 繁體中文</div>
+  <h1>Clinical Mind AI 教師手冊</h1>
+  <p class="stand">從開帳號到讓學生完成第一次 AI 模擬問診,你需要知道的操作順序、設定選擇與實務判斷。每個步驟都連到配套的繁體中文影片。</p>
+  <div class="bib">
+    <span><b>適用對象</b> 授課教師、臨床教師、機構管理員</span>
+    <span><b>版本</b> 2026-09-17 v2</span>
+    <span><b>平台</b> clinicalmindai.com</span>
+    <span><b>影片</b> 33 支繁體中文教學影片(本機)</span>
+  </div>
+</div>
+
+<!-- ================= §0 ================= -->
+<section class="sec" id="s0">
+  <h2><span class="n">§0</span><span>這份手冊怎麼用</span></h2>
+  <p class="purpose">先讀這一節,它決定你怎麼看待後面的每一個步驟。</p>
+
+  <h3><span class="n">0.1</span><span>它描述順序與選擇,不描述按鈕位置</span></h3>
+  <p>這份手冊告訴你<b>做一件事要經過哪些步驟</b>、<b>每一步有哪些選項</b>、<b>各選項適合什麼場合</b>。它不描述某個按鈕在畫面的哪個角落。</p>
+  <p>原因有二。一是介面會改版,順序與教學決策不會。二是本手冊配套 <b>33 支繁體中文教學影片</b>,畫面與介面文字都是 2026 年 9 月在平台上實機錄製的,逐鍵操作看影片最快。因此每個步驟底下都有「影片」區塊,點段落按鈕就從那一段開始播;影片放在手冊旁邊的 <code>_影片</code> 資料夾,不需要網路。</p>
+
+  <h3><span class="n">0.2</span><span>來源與可信度</span></h3>
+  <p>內容編寫自 Clinical Mind AI 官方網站的公開頁面:主要功能、技術文件、教學影片索引、機構資料匯出說明,以及十篇教師使用案例。§1 至 §8 與 §11 的操作順序、設定名稱與平台行為,已於 2026 年 9 月 12 日至 17 日在平台上逐項驗證,並與影片內容一致;§9 機構管理員功能與 §10 的證據限制仍依官方公開文件。</p>
+  <div class="note warn">
+    <div class="lb">請注意</div>
+    <p>本手冊<b>非史丹佛官方文件</b>。已驗證的範圍如上;平台仍會改版,凡與實際畫面不符處,以畫面為準。</p>
+    <p style="margin-bottom:0">標示為 <b>建議</b> 的段落是依據他校使用經驗與本院試作所做的實務判斷,不是官方規定。你可以不照做。</p>
+  </div>
+
+  <h3><span class="n">0.3</span><span>標示約定</span></h3>
+  <dl class="fields">
+    <dt>提示</dt><dd>藍色框。省時間或提高品質的做法。</dd>
+    <dt>請注意</dt><dd>黃色框。不照做會出問題,但可以補救。</dd>
+    <dt>不要這樣做</dt><dd>紅色框。會造成成績爭議、資料問題或整批重做。</dd>
+    <dt>建議</dt><dd>綠色框。編寫者的實務判斷,非官方要求。</dd>
+    <dt><span class="ui">介面名稱</span></dt><dd>平台上的功能名稱,一律用繁體中文介面的原文。中英對照見<a href="#a2">附錄 B</a>。</dd>
+    <dt>影片 08 · §5 2:09</dt><dd>影片區塊裡的按鈕:第 08 支影片的第 5 段,從 2 分 09 秒開始播。「從頭播放」看整支。</dd>
+  </dl>
+</section>
+
+<!-- ================= §1 ================= -->
+<section class="sec" id="s1">
+  <h2><span class="n">§1</span><span>開始之前</span></h2>
+  <p class="purpose">搞清楚你是誰、你能做什麼,以及這個平台的基本結構。花十分鐘讀完這一節,可以省掉後面好幾個小時的困惑。</p>
+
+  <h3 id="s1-1"><span class="n">1.1</span><span>三種角色能做什麼</span></h3>
+  <div class="tw"><table>
+    <thead><tr><th style="width:150px">角色</th><th>可以做</th><th style="width:190px">不能做</th></tr></thead>
+    <tbody>
+      <tr><td><b>機構管理員</b><br><span class="xref">institutional admin</span></td>
+        <td>管理全機構的使用者、課程與教材;建立課程並加入教師與學生;建立機構共用的學習成果;申請結構化資料匯出。</td>
+        <td>—</td></tr>
+      <tr><td><b>教師</b><br><span class="xref">instructor</span></td>
+        <td>建立患者、評分量表、臨床案例活動;<b>申請開課</b>、把活動指派到課程、設定進階參數;審核與傳送回饋;查看課程分析與學生表現;把患者與評分量表釋出到機構資料庫或公共資料庫。</td>
+        <td>不能自己建立課程,不能申請機構資料匯出,不能管理他人帳號。</td></tr>
+      <tr><td><b>學生</b><br><span class="xref">student</span></td>
+        <td>進入被指派的活動、與 AI 患者互動、作答、寫就診紀錄、查看自己所有的作答紀錄與回饋。</td>
+        <td>看不到其他學生的資料,不能修改教材。</td></tr>
+    </tbody>
+  </table></div>
+  <p>整個機構是一個<b>獨立封閉的環境</b>。史丹佛只負責為機構開設一個管理員帳號,自此之後使用者、教材與資料都由機構自行掌控。</p>
+  <p>課程裡的教師分<b>主講教師</b>與<b>共同教師</b>。只有主講教師能編輯課程資訊與成員;如果你在課程卡片上看不到「編輯課程」,通常代表你在這門課是共同教師。</p>
+  <div class="vid" data-src="_影片/影片06_建立與編輯課程.mp4"><div class="vh"><span class="vn">影片 06</span><span>建立與編輯課程</span><span class="vd">3:42</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="45">&sect;4 主講與共同教師 0:45</a><a class="vt" data-t="64">&sect;5 權限差別 1:04</a><a class="vt" data-t="206">&sect;16 看不到編輯課程時 3:26</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3 id="s1-2"><span class="n">1.2</span><span>取得帳號</span></h3>
+  <p>依你的單位狀況,走其中一條:</p>
+  <div class="tw"><table class="pick">
+    <thead><tr><th style="width:170px">你的狀況</th><th>做法</th></tr></thead>
+    <tbody>
+      <tr><td>單位已是合作機構</td><td>聯繫該機構的計畫主持人(principal investigator)開設教師帳號,<b>不需要自行對外申請</b>。本院窗口見<a href="#a3">附錄 C</a>。</td></tr>
+      <tr><td>單位尚未加入</td><td>由機構層級簽署研究合作協議(Research Collaboration Agreement),向 <code>clinicalmindai@stanford.edu</code> 索取文件。</td></tr>
+      <tr><td>只想先試用</td><td>到 <code>clinicalmindai.com/request-demo</code> 申請 4 週的教師身分試用帳號。</td></tr>
+    </tbody>
+  </table></div>
+  <div class="vid" data-src="_影片/影片01_教師帳號初次設定.mp4"><div class="vh"><span class="vn">影片 01</span><span>教師帳號初次設定</span><span class="vd">1:25</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="9">&sect;2 收到邀請信 0:09</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片02_變更登入密碼.mp4"><div class="vh"><span class="vn">影片 02</span><span>變更登入密碼</span><span class="vd">0:52</span><a class="vt" data-t="0">從頭播放</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片03_聯絡支援團隊.mp4"><div class="vh"><span class="vn">影片 03</span><span>聯絡支援團隊</span><span class="vd">1:14</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="32">&sect;5 填寫訊息 0:32</a><a class="vt" data-t="47">&sect;7 附上截圖 0:47</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3 id="s1-3"><span class="n">1.3</span><span>四層結構:先懂這個</span></h3>
+  <p>平台上所有東西都是這四層的組合。你建立教材的順序,就是由下往上堆。導覽列的順序也是這樣排的:<span class="ui">我的課程</span>、<span class="ui">患者</span>、<span class="ui">評分量表</span>、<span class="ui">臨床案例活動</span>(還有一個 <span class="ui">CMind Atrium</span>,本手冊不涉及)。</p>
+  <div class="tw"><table>
+    <thead><tr><th style="width:60px">層</th><th style="width:190px">名稱</th><th>是什麼</th><th style="width:120px">可否單獨複用</th></tr></thead>
+    <tbody>
+      <tr><td class="m">4</td><td><b>課程</b><br><span class="xref">Course</span></td><td>把活動指派給學生,並決定開放時間、計時器、重試等執行條件。</td><td>—</td></tr>
+      <tr><td class="m">3</td><td><b>臨床案例活動</b><br><span class="xref">Clinical Case Activity</span></td><td>學生實際操作的那個東西。由患者、章節、題目與回饋設定組成。<b>教學的最小單位。</b></td><td>可,放進不同課程</td></tr>
+      <tr><td class="m">2</td><td><b>評分量表</b><br><span class="xref">Rubric</span></td><td>評什麼、怎麼給分。決定學生收到什麼回饋、你事後拿到什麼資料。</td><td>可,配不同患者</td></tr>
+      <tr><td class="m">1</td><td><b>患者</b><br><span class="xref">Patient</span></td><td>可對話的虛擬患者,含病史、既往紀錄、理學檢查、醫學檢查與行為。</td><td>可,配不同量表</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note ok">
+    <div class="lb">建議</div>
+    <p style="margin-bottom:0">四層可以各自複用,這是本平台最省力的地方。<b>一位胸痛患者配「病史採集完整度」量表,是二年級的練習;同一位患者配「鑑別診斷推理」量表,就是四年級的評量。</b>患者只需要建一次。設計課程時請刻意利用這一點。</p>
+  </div>
+  <div class="vid" data-src="_影片/影片05_平台操作總覽.mp4"><div class="vh"><span class="vn">影片 05</span><span>平台操作總覽</span><span class="vd">2:07</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="14">&sect;2 我的課程 0:14</a><a class="vt" data-t="38">&sect;4 患者 0:38</a><a class="vt" data-t="61">&sect;7 評分量表 1:01</a><a class="vt" data-t="85">&sect;10 臨床案例活動 1:25</a><a class="vt" data-t="102">&sect;12 四步的彈性 1:42</a></div><video controls preload="none" playsinline hidden></video></div>
+</section>
+
+<!-- ================= §2 ================= -->
+<section class="sec" id="s2">
+  <h2><span class="n">§2</span><span>快速上手:做出你的第一個活動</span></h2>
+  <p class="purpose">目標是走完一次完整流程,不是做出可以正式上線的教材。預計 60 分鐘。第一次做,請完全照這個順序。</p>
+
+  <div class="note">
+    <div class="lb">開始前確認</div>
+    <ul style="margin-bottom:0">
+      <li>你的教師帳號可以登入,而且機構管理員已經把你加進一門測試用課程(教師不能自己建課,見步驟 6)。</li>
+      <li>你已經想好要練什麼技能(例如:能問出完整的胸痛病史)。</li>
+      <li>你有 60 分鐘不被打斷的時間。</li>
+    </ul>
+  </div>
+
+  <ol class="steps">
+    <li>
+      <div class="sh">確認環境 <span class="est">5 分鐘</span></div>
+      <p>登入後看導覽列有沒有這五項:<span class="ui">我的課程</span>、<span class="ui">患者</span>、<span class="ui">評分量表</span>、<span class="ui">臨床案例活動</span>、<span class="ui">CMind Atrium</span>。如果看到的是儀表板、使用者、課程、資料,那是管理員帳號,不是教師帳號。</p>
+      <div class="vid" data-src="_影片/影片05_平台操作總覽.mp4"><div class="vh"><span class="vn">影片 05</span><span>平台操作總覽</span><span class="vd">2:07</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="14">&sect;2 導覽列 0:14</a></div><video controls preload="none" playsinline hidden></video></div>
+    </li>
+    <li>
+      <div class="sh">先寫評分量表 <span class="est">15 分鐘</span></div>
+      <p>不要從患者開始。先決定你要評什麼,才知道患者身上需要放哪些線索。</p>
+      <p>寫 5 到 8 個項目,每個項目都是<b>可觀察的行為</b>,而且用 <code>0 = 未做到 / 1 = 做到</code> 判定。例如「有詢問用藥史」、「有詢問症狀持續時間」。</p>
+      <ul>
+        <li>一個項目只評一件事。</li>
+        <li>不要寫「展現良好的臨床思維」這種抽象敘述。</li>
+        <li>寫完要按「完成」,不要停在草稿:草稿量表不會出現在活動的量表清單裡。</li>
+      </ul>
+      <div class="vid" data-src="_影片/影片15_建立新評分量表.mp4"><div class="vh"><span class="vn">影片 15</span><span>建立新評分量表</span><span class="vd">1:54</span><a class="vt" data-t="0">從頭播放</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片16_建立評分量表的好做法.mp4"><div class="vh"><span class="vn">影片 16</span><span>建立評分量表的好做法</span><span class="vd">2:23</span><a class="vt" data-t="0">從頭播放</a></div><video controls preload="none" playsinline hidden></video></div>
+    </li>
+    <li>
+      <div class="sh">建立患者 <span class="est">15 分鐘</span></div>
+      <p>第一次請<b>從公共資料庫或機構資料庫複製</b>一位相近的患者再修改,不要從零手建。</p>
+      <p>複製後第一件事:把第 2 步的<span class="ui">患者語言</span>改成<b>繁體中文</b>,並把第 9 步<span class="ui">行為</span>的「其他」欄填上這位患者說話的樣子,不要留空。詳見 <a href="#s3-2">§3.2</a>。</p>
+      <div class="note stop">
+        <div class="lb">不要這樣做</div>
+        <p style="margin-bottom:0">不要用患者語言還是「英語」的患者上課。從公共資料庫複製來的患者幾乎都是英語;學生用中文問診,患者只會回一句聽不懂,<b>即使病史全文是中文也一樣</b>。語言欄決定患者聽得懂什麼,與病史用什麼語言寫無關。</p>
+      </div>
+      <div class="vid" data-src="_影片/影片09_從資料庫複製患者.mp4"><div class="vh"><span class="vn">影片 09</span><span>從資料庫複製患者</span><span class="vd">4:13</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="59">&sect;6 打開公共資料庫 0:59</a><a class="vt" data-t="129">&sect;12 複製到我的資料庫 2:09</a><a class="vt" data-t="203">&sect;18 改患者語言 3:23</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片13_編輯已建立的患者資料.mp4"><div class="vh"><span class="vn">影片 13</span><span>編輯已建立的患者資料</span><span class="vd">2:02</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="10">&sect;2 進入編輯 0:10</a></div><video controls preload="none" playsinline hidden></video></div>
+    </li>
+    <li>
+      <div class="sh">組裝臨床案例活動 <span class="est">15 分鐘</span></div>
+      <p>精靈有四步:資訊、活動、回饋、釋出。第一個活動只放四塊,不要貪多:</p>
+      <ul>
+        <li><b>說明</b> —— 第 2 步最上方固定的那一格,寫情境與任務,講清楚學生該做什麼。</li>
+        <li><b>一個患者互動章節:病史</b> —— 與 AI 患者的問診本體,互動類型選「文字聊天機器人」。</li>
+        <li><b>一個內容章節,放一題開放式問題</b> —— 例如「你的初步鑑別診斷是什麼」。</li>
+        <li><b>第 3 步回饋</b> —— 「活動回饋」打開、「由 AI 產生」、傳送前審核選「是」;病史章節掛上第 2 步的量表。</li>
+      </ul>
+      <div class="vid" data-src="_影片/影片21_建立臨床案例活動的步驟.mp4"><div class="vh"><span class="vn">影片 21</span><span>建立臨床案例活動的步驟</span><span class="vd">5:44</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="74">&sect;6 第 1 步資訊 1:14</a><a class="vt" data-t="133">&sect;9 第 2 步說明 2:13</a><a class="vt" data-t="164">&sect;11 新增章節 2:44</a><a class="vt" data-t="207">&sect;13 開放式問題 3:27</a><a class="vt" data-t="237">&sect;15 第 3 步回饋 3:57</a><a class="vt" data-t="275">&sect;18 儲存並完成 4:35</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片24_患者互動章節.mp4"><div class="vh"><span class="vn">影片 24</span><span>患者互動章節</span><span class="vd">4:47</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="64">&sect;6 病史的三種互動類型 1:04</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片26_為臨床案例活動設定回饋.mp4"><div class="vh"><span class="vn">影片 26</span><span>為臨床案例活動設定回饋</span><span class="vd">5:46</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="48">&sect;4 打開活動回饋 0:48</a><a class="vt" data-t="54">&sect;5 AI 或教師 0:54</a><a class="vt" data-t="80">&sect;7 傳送前審核 1:20</a><a class="vt" data-t="166">&sect;12 掛上評分量表 2:46</a></div><video controls preload="none" playsinline hidden></video></div>
+    </li>
+    <li>
+      <div class="sh">用學生視角走一次 <span class="est">8 分鐘</span></div>
+      <p>用預覽功能完整跑一遍,包含收到回饋那一步。你會立刻發現指令哪裡寫不清楚、量表哪一項判不準。預覽前會提示「你的表現不會被儲存」;已啟用 AI 回饋時,預覽結束會立即收到回饋。</p>
+      <div class="vid" data-src="_影片/影片28_預覽與編輯臨床案例活動.mp4"><div class="vh"><span class="vn">影片 28</span><span>預覽與編輯臨床案例活動</span><span class="vd">3:02</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="21">&sect;3 預覽 0:21</a><a class="vt" data-t="60">&sect;6 學生看到的開始頁 1:00</a><a class="vt" data-t="141">&sect;12 編輯 2:21</a></div><video controls preload="none" playsinline hidden></video></div>
+    </li>
+    <li>
+      <div class="sh">指派到課程 <span class="est">2 分鐘</span></div>
+      <p>教師不能自己建立課程。請機構管理員建一門測試課程並把你加為主講教師(在「我的課程」點「申請建立新課程」會看到說明與管理員的聯絡信箱)。然後進入課程 → <span class="ui">臨床案例活動</span>分頁 → <span class="ui">管理</span> → <span class="ui">新增臨床個案活動</span> → 選活動 → 儲存。第一次請把<span class="ui">允許重試</span>打開、不開<span class="ui">計時器</span>、回饋維持先審後發。</p>
+      <div class="vid" data-src="_影片/影片06_建立與編輯課程.mp4"><div class="vh"><span class="vn">影片 06</span><span>建立與編輯課程</span><span class="vd">3:42</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="78">&sect;6 申請建立新課程 1:18</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片31_將臨床案例活動加入課程.mp4"><div class="vh"><span class="vn">影片 31</span><span>將臨床案例活動加入課程</span><span class="vd">1:39</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="20">&sect;3 管理 0:20</a><a class="vt" data-t="37">&sect;5 新增臨床個案活動 0:37</a><a class="vt" data-t="56">&sect;8 儲存 0:56</a></div><video controls preload="none" playsinline hidden></video></div>
+    </li>
+  </ol>
+
+  <div class="note warn">
+    <div class="lb">請注意</div>
+    <p style="margin-bottom:0"><b>先改好,再指派。</b>活動指派到課程的當下,平台會把患者與評分量表複製一份<b>快照</b>進課程。之後你再編輯患者或量表,已指派的課程看不到;把活動重新儲存一次也沒用。要更新只能在課程的「管理」裡刪除這個活動再重新指派,<b>而刪除會連學生的全部嘗試一起刪,包括已完成的</b>。</p>
+  </div>
+  <div class="vid" data-src="_影片/影片13_編輯已建立的患者資料.mp4"><div class="vh"><span class="vn">影片 13</span><span>編輯已建立的患者資料</span><span class="vd">2:02</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="62">&sect;10 快照怎麼來的 1:02</a><a class="vt" data-t="87">&sect;13 怎麼更新 1:27</a><a class="vt" data-t="105">&sect;14 刪除的代價 1:45</a></div><video controls preload="none" playsinline hidden></video></div>
+  <div class="note ok">
+    <div class="lb">建議</div>
+    <p style="margin-bottom:0">做完之後<b>找一位學生或同事實跑一次</b>再開放給全班。第一版一定有你自己看不出來的問題,尤其是指令的模糊處與患者的回應語氣。</p>
+  </div>
+  <div class="note stop">
+    <div class="lb">不要這樣做</div>
+    <p style="margin-bottom:0">不要把第一個活動直接拿去計成績。你會同時面對工具不熟、量表未調校、AI 判分未驗證、學生不熟悉介面四個變數,任何一個出問題都會變成成績爭議。<b>第一學期只做形成性用途。</b></p>
+  </div>
+</section>
+
+<!-- ================= §3 ================= -->
+<section class="sec" id="s3">
+  <h2><span class="n">§3</span><span>建立患者</span></h2>
+  <p class="purpose">患者是最花時間的一層,但也是最能複用的一層。做好一次可以用很多年。</p>
+
+  <h3 id="s3-1"><span class="n">3.1</span><span>選擇建立方式</span></h3>
+  <p>有五條路,依你手上有什麼素材來選:</p>
+  <div class="tw"><table class="pick">
+    <thead><tr><th style="width:150px">方式</th><th style="width:210px">什麼時候用</th><th>注意</th></tr></thead>
+    <tbody>
+      <tr><td>從資料庫複製</td><td>第一次建、或資料庫裡有相近案例</td><td><b>最推薦的起步方式。</b>可從機構資料庫或公共資料庫複製後修改。兩種做法:檢視頁右上角「複製患者到我的資料庫」,或清單列的「新增至我的資料庫」圖示。按下去畫面沒有任何提示,要<b>重新整理</b>「我的資料庫」才看得到副本。</td></tr>
+      <tr><td>用檔案建立</td><td>你已經有現成的教案</td><td>第 2 步的「用檔案填寫患者」接受 TXT、Word、PDF;AI 讀完後預先填入表單。<b>擷取結果必須逐項核對</b>,實測曾把「患者健康信念」「患者主要擔憂」填成粵語。</td></tr>
+      <tr><td>使用 AI 完成</td><td>只有一個模糊的想法</td><td>要先填完第 1 至 4 步的必填欄位與主訴,「使用 AI 完成」才會亮起;貼一段簡短摘要(例如選擇題題幹或舊案例情境),AI 補完整份病史。<b>生成內容必須逐項核對醫學合理性。</b></td></tr>
+      <tr><td>從零手建</td><td>你最在意的核心案例</td><td>完全掌控,但最花時間。不建議第一次就用。表單 10 步見 <a href="#s3-2">§3.2</a>。</td></tr>
+      <tr><td>混合</td><td>實務上最常見</td><td>用檔案匯入舊教案 → 使用 AI 完成補缺漏 → 手動校正。</td></tr>
+    </tbody>
+  </table></div>
+  <div class="vid" data-src="_影片/影片09_從資料庫複製患者.mp4"><div class="vh"><span class="vn">影片 09</span><span>從資料庫複製患者</span><span class="vd">4:13</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="59">&sect;6 篩選與搜尋 0:59</a><a class="vt" data-t="104">&sect;10 先檢視 1:44</a><a class="vt" data-t="129">&sect;12 複製 2:09</a><a class="vt" data-t="148">&sect;14 要重新整理 2:28</a><a class="vt" data-t="203">&sect;18 患者語言 3:23</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片10_用檔案建立患者.mp4"><div class="vh"><span class="vn">影片 10</span><span>用檔案建立患者</span><span class="vd">3:28</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="44">&sect;4 用檔案填寫患者 0:44</a><a class="vt" data-t="85">&sect;8 AI 預填結果 1:25</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片11_用 AI 建立患者病史.mp4"><div class="vh"><span class="vn">影片 11</span><span>用 AI 建立患者病史</span><span class="vd">2:23</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="14">&sect;2 先完成必填 0:14</a><a class="vt" data-t="57">&sect;9 使用 AI 完成 0:57</a><a class="vt" data-t="76">&sect;11 如何填寫 1:16</a><a class="vt" data-t="100">&sect;13 產生中 1:40</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片08_建立新患者.mp4"><div class="vh"><span class="vn">影片 08</span><span>建立新患者</span><span class="vd">11:00</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="59">&sect;3 表單總覽 0:59</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <div class="note stop">
+    <div class="lb">不要這樣做</div>
+    <p style="margin-bottom:0">不要把 AI 生成或文件擷取的病史直接上線。自動補完可能產生醫學上不成立的組合(用藥與診斷矛盾、檢查數值與臨床表現不符),也可能夾雜非繁體中文的文字。<b>案例上線前請由第二位教師逐項審過</b>,把審稿當成必要流程,不是選項。</p>
+  </div>
+
+  <h3 id="s3-2"><span class="n">3.2</span><span>表單的 10 個步驟</span></h3>
+  <p>新增患者是一份 10 步的表單。前 4 步定調並給出身份與外貌,第 5 至 8 步準備學生會拿到的臨床資料,第 9 步決定患者表現出來的樣子,第 10 步決定誰看得到。每個欄位旁都有「如何填寫」,不確定就先點開。</p>
+  <dl class="fields">
+    <dt>1 規格</dt><dd>醫學領域、患者用途。用途至少 10 個字,否則「下一步」沒有反應。</dd>
+    <dt>2 身份資訊</dt><dd>姓名、年齡、性別、族裔、<b>患者語言</b>、地點。年齡、性別、族裔會影響哪些數值算正常;語言與地點影響患者說話的樣子。</dd>
+    <dt>3 外貌</dt><dd>體型、配飾與臉部特徵。給 AI 畫頭像用。</dd>
+    <dt>4 頭像</dt><dd>從建議圖片挑,或按「產生新的」用 AI 產生候選(一次三張)。AI 產生的圖片使用前要仔細審核。</dd>
+    <dt>5 病史</dt><dd>從主訴、現病史到家族史、社會史、習慣,共 15 欄。要寫到能讓一個人照著演出來。</dd>
+    <dt>6 既往紀錄(可選)</dt><dd>就診、藥物、實驗室、圖片、操作/處置、心臟學檢查。每筆填「距離本次就診多久」,發現或媒體至少一項。</dd>
+    <dt>7 理學檢查(可選)</dt><dd>只填異常的項目,<b>沒填的一律視為正常</b>。</dd>
+    <dt>8 醫學檢查(可選)</dt><dd>同上。學生看不到你選的類別、檢查名稱與答案,只看得到結果本身。</dd>
+    <dt>9 行為</dt><dd>行為(友好/中性/防禦性/焦慮/迴避)與回應程度(高度/中度/低度回應/不合作)必填;「其他」欄自由描述,例如「說話時常不自覺摸胸口」。</dd>
+    <dt>10 釋出</dt><dd>我的資料庫預設勾選;可同時釋出到機構資料庫、公共資料庫。</dd>
+  </dl>
+  <div class="vid" data-src="_影片/影片08_建立新患者.mp4"><div class="vh"><span class="vn">影片 08</span><span>建立新患者</span><span class="vd">11:00</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="129">&sect;5 1 規格 2:09</a><a class="vt" data-t="152">&sect;6 2 身份資訊 2:32</a><a class="vt" data-t="192">&sect;7 3 外貌 3:12</a><a class="vt" data-t="220">&sect;8 4 頭像 3:40</a><a class="vt" data-t="258">&sect;10 5 病史 4:18</a><a class="vt" data-t="299">&sect;11 6 既往紀錄 4:59</a><a class="vt" data-t="379">&sect;14 7 理學檢查 6:19</a><a class="vt" data-t="474">&sect;17 8 醫學檢查 7:54</a><a class="vt" data-t="522">&sect;19 9 行為 8:42</a><a class="vt" data-t="551">&sect;20 10 釋出 9:11</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <div class="note stop">
+    <div class="lb">不要這樣做</div>
+    <p style="margin-bottom:0">不要讓中文課的患者停在「英語」。<b>患者語言決定患者聽得懂什麼</b>,與病史用什麼語言寫無關;學生用中文問,英語患者只會回「I do not understand」。中文課一律選繁體中文(78 種語言之一)。</p>
+  </div>
+  <div class="note">
+    <div class="lb">提示</div>
+    <p><b>第 9 步「行為」是最被低估的一步。</b>它把一個問診練習變成溝通訓練,而且幾乎不增加建置成本。</p>
+    <p style="margin-bottom:0">他校經驗:某校兒童牙科課把模擬母親設定為「使用日常語言、選擇性揭露資訊、焦慮程度會隨對話變化」。同一份病史,學生的體驗完全不同。在這個平台上,用「行為」「回應程度」加「其他」欄的自由描述就做得到。<b>「其他」欄不要留空。</b></p>
+  </div>
+
+  <h3 id="s3-3"><span class="n">3.3</span><span>理學檢查與醫學檢查:選對互動模式</span></h3>
+  <p>檢查的<b>資料</b>放在患者裡(表單第 7、8 步),學生怎麼拿到這些資料的<b>互動模式</b>則是在臨床案例活動的患者互動章節裡選的。三種模式,<b>選哪一種直接決定活動的難度</b>;同一位患者靠切換模式就能給不同年級使用。</p>
+  <div class="tw"><table class="pick">
+    <thead><tr><th style="width:110px">模式</th><th style="width:230px">學生做什麼</th><th>考的是什麼</th><th style="width:150px">適合</th></tr></thead>
+    <tbody>
+      <tr><td>報告</td><td>直接看到最低限度的檢查報告清單,加上你為這位患者加入的異常發現</td><td>只考判讀,不考「想不想得到要做」。</td><td>低年級、課前預習</td></tr>
+      <tr><td>選擇</td><td>從清單中挑出想做的檢查;用「更改可用檢查」可限制清單,預設全開</td><td>有提示的取捨判斷。</td><td>中年級、資源使用意識</td></tr>
+      <tr><td>請求</td><td>在開放式欄位自己寫出想做的檢查,平台回覆這位患者對應的發現</td><td>從零想起,最接近真實。</td><td>高年級、PGY、OSCE</td></tr>
+    </tbody>
+  </table></div>
+  <h4>醫學檢查結果的時序</h4>
+  <p>醫學檢查章節下方可以設定學生什麼時候拿到結果:</p>
+  <ul>
+    <li><b>立即</b> —— 學生送出請求後馬上看到。</li>
+    <li><b>輕微延遲</b> —— 平台會自動多建一個「醫學檢查結果」章節,你可以把它放在醫學檢查之後的任何位置,中間插入其他步驟,例如幾道題目。</li>
+    <li><b>較大延遲</b>(讓患者在另一個時間回來)與<b>顯示檢查費用</b> —— 目前標示「即將推出」,還不能用。</li>
+  </ul>
+  <div class="note">
+    <div class="lb">提示</div>
+    <p style="margin-bottom:0">輕微延遲是很有力的教學設計:它<b>逼學生在資訊不完整時先形成假設</b>,而這正是臨床推理的核心動作。真實情境中,報告沒出來之前你就得決定要不要處置。</p>
+  </div>
+  <div class="vid" data-src="_影片/影片24_患者互動章節.mp4"><div class="vh"><span class="vn">影片 24</span><span>患者互動章節</span><span class="vd">4:47</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="115">&sect;9 三種模式 1:55</a><a class="vt" data-t="123">&sect;10 報告與選擇 2:03</a><a class="vt" data-t="143">&sect;11 請求 2:23</a><a class="vt" data-t="165">&sect;13 更改可用檢查 2:45</a><a class="vt" data-t="181">&sect;14 結果時序 3:01</a><a class="vt" data-t="195">&sect;15 輕微延遲 3:15</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片12_新增自訂理學檢查或醫學檢查.mp4"><div class="vh"><span class="vn">影片 12</span><span>新增自訂理學檢查或醫學檢查</span><span class="vd">1:59</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="11">&sect;2 自訂醫學檢查 0:11</a><a class="vt" data-t="88">&sect;10 自訂理學檢查 1:28</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3 id="s3-4"><span class="n">3.4</span><span>多媒體資料庫</span></h3>
+  <p>平台內建<span class="ui">多媒體資料庫</span>,在既往紀錄、理學檢查、醫學檢查的「新增媒體」都能打開。八個分類:</p>
+  <p><span class="chip a">臨床音訊</span><span class="chip a">臨床病例圖片</span><span class="chip a">皮膚科圖片</span><span class="chip a">心電圖圖片</span><span class="chip a">超音波影片</span><span class="chip a">X 線圖片</span><span class="chip a">肉眼病理學</span><span class="chip a">顯微病理學</span></p>
+  <p>三個分頁:在資料庫中搜尋、從電腦上傳、YouTube 連結(貼網址就會出現預覽)。依官方說明,所有多媒體會依學生互動的時間點自動加上時間戳,讓報告日期與敘事時序一致;素材由 Healthcare Simulation Middle East、theSimTech、DermNet 與史丹佛病理學系教學影像庫提供。</p>
+  <div class="vid" data-src="_影片/影片04_使用多媒體資料庫.mp4"><div class="vh"><span class="vn">影片 04</span><span>使用多媒體資料庫</span><span class="vd">2:53</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="24">&sect;3 三個分頁與分類 0:24</a><a class="vt" data-t="60">&sect;7 搜尋 1:00</a><a class="vt" data-t="106">&sect;13 從電腦上傳 1:46</a><a class="vt" data-t="124">&sect;14 HIPAA 提醒 2:04</a><a class="vt" data-t="133">&sect;15 YouTube 連結 2:13</a></div><video controls preload="none" playsinline hidden></video></div>
+  <div class="note warn">
+    <div class="lb">請注意</div>
+    <p style="margin-bottom:0">「從電腦上傳」分頁明寫:<b>這個平台不符合 HIPAA 要求,請勿分享真實的患者資訊。</b>要上傳本院自己的影像,務必先確認去識別化與患者同意符合院內規範,平台不會替你把關。DermNet 的影像限免費教育與非商業用途。</p>
+  </div>
+</section>
+
+<!-- ================= §4 ================= -->
+<section class="sec" id="s4">
+  <h2><span class="n">§4</span><span>建立評分量表</span></h2>
+  <p class="purpose">量表決定三件事:評什麼、學生收到什麼回饋、你事後拿到什麼資料。它不是評量的附屬品,它就是評量本身。</p>
+
+  <h3><span class="n">4.1</span><span>撰寫原則</span></h3>
+  <ol>
+    <li><b>一個項目只評一件事。</b>「病史完整且展現同理心」要拆成兩項,否則給分無所適從。</li>
+    <li><b>用可觀察的行為描述。</b>寫「有詢問用藥史」,不要寫「展現良好的臨床思維」。</li>
+    <li><b>優先用二元判定。</b><code>0 / 1</code> 的一致性遠高於 1 到 5 分的分級,交給 AI 判定時差距更明顯。</li>
+    <li><b>控制項目數量。</b>學生要看得完回饋才有用。建議單一活動不超過 10 到 12 項。</li>
+    <li><b>先寫量表再寫患者。</b>你想評什麼,決定患者身上該有哪些線索。</li>
+  </ol>
+  <div class="note">
+    <div class="lb">提示</div>
+    <p style="margin-bottom:0">他校經驗:某校語言治療課讓平台自動追蹤學生有沒有問到每一個關鍵會談項目,<code>0 = 未問到 / 1 = 已問到</code>,活動結束後依此產生個別化回饋。<b>簡單、可靠、可統計。</b>不要一開始就設計複雜的加權評分。</p>
+  </div>
+  <div class="vid" data-src="_影片/影片15_建立新評分量表.mp4"><div class="vh"><span class="vn">影片 15</span><span>建立新評分量表</span><span class="vd">1:54</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="19">&sect;3 新增評分量表 0:19</a><a class="vt" data-t="54">&sect;7 項目與等級 0:54</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片16_建立評分量表的好做法.mp4"><div class="vh"><span class="vn">影片 16</span><span>建立評分量表的好做法</span><span class="vd">2:23</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="17">&sect;2 好做法 0:17</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片19_編輯評分量表細節.mp4"><div class="vh"><span class="vn">影片 19</span><span>編輯評分量表細節</span><span class="vd">1:41</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="19">&sect;3 編輯 0:19</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片18_從資料庫複製評分量表.mp4"><div class="vh"><span class="vn">影片 18</span><span>從資料庫複製評分量表</span><span class="vd">2:06</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="19">&sect;3 從資料庫複製 0:19</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3><span class="n">4.2</span><span>檢核表也用同一個工具</span></h3>
+  <p>如果你要做的是 OSCE 常見的檢核表(checklist),不需要另外找工具,用評分量表就能做:每個項目只設 0 分與 1 分兩個等級。</p>
+  <div class="vid" data-src="_影片/影片17_用評分量表工具製作檢核表.mp4"><div class="vh"><span class="vn">影片 17</span><span>用評分量表工具製作檢核表</span><span class="vd">1:58</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="18">&sect;3 兩級量表 0:18</a></div><video controls preload="none" playsinline hidden></video></div>
+  <div class="note warn">
+    <div class="lb">請注意</div>
+    <p style="margin-bottom:0">存成<b>草稿</b>的評分量表不會出現在臨床案例活動第 3 步的量表清單裡。寫完要按「完成」。</p>
+  </div>
+  <div class="note stop">
+    <div class="lb">不要這樣做</div>
+    <p style="margin-bottom:0">不要跳過量表直接建患者。這是本平台最常見的失敗模式:教師做出很精緻的患者,學生玩得很開心,但教師拿不到任何可用的評量資訊,第二學期就放棄了。<b>先寫量表。</b></p>
+  </div>
+</section>
+
+<!-- ================= §5 ================= -->
+<section class="sec" id="s5">
+  <h2><span class="n">§5</span><span>組裝臨床案例活動</span></h2>
+  <p class="purpose">臨床案例活動是學生實際操作的東西。它由章節組成,你決定放哪幾個、放什麼順序。</p>
+  <p>建立精靈有四步:<span class="ui">資訊</span>(患者、目的、難度、學習成果)→ <span class="ui">活動</span>(說明與章節)→ <span class="ui">回饋</span> → <span class="ui">釋出</span>。編輯已建立的活動時只有前三步,最後按「儲存並完成」;畫面會提醒「更改不會顯示在已分配此資源的課程中」,就是 §2 說的快照規則。</p>
+  <div class="vid" data-src="_影片/影片21_建立臨床案例活動的步驟.mp4"><div class="vh"><span class="vn">影片 21</span><span>建立臨床案例活動的步驟</span><span class="vd">5:44</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="74">&sect;6 資訊 1:14</a><a class="vt" data-t="133">&sect;9 活動與說明 2:13</a><a class="vt" data-t="237">&sect;15 回饋 3:57</a><a class="vt" data-t="268">&sect;17 釋出 4:28</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3 id="s5-1"><span class="n">5.1</span><span>章節與題型</span></h3>
+  <p>章節分兩種。內容章節可以自由組合文字、媒體與問題;患者互動章節各自成一節,裡面不能再放題目。</p>
+  <div class="tw"><table>
+    <thead><tr><th style="width:200px">章節</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td><b>內容章節</b></td><td>文字(說明、學習資源、前置閱讀,支援格式編輯與表格)、媒體、問題。問題有四種:多項選擇、開放式問題、點選圖片題、判斷題。想放幾個就放幾個。</td></tr>
+      <tr><td><b>患者互動章節:病史</b></td><td>與 AI 患者的問診本體。三種互動類型:報告(直接把病史交給學生讀)、文字聊天機器人(打字問診,頻寬低、紀錄準、支援詳細回饋)、語音加文字(用說的,頻寬高,14 歲以下患者自動改用文字)。</td></tr>
+      <tr><td><b>患者互動章節:理學檢查</b></td><td>報告、選擇、請求三種模式,見 <a href="#s3-3">§3.3</a>。</td></tr>
+      <tr><td><b>患者互動章節:醫學檢查</b></td><td>同上,另可設定結果時序(立即、輕微延遲)。</td></tr>
+      <tr><td><b>患者互動章節:患者病歷</b></td><td>學生把診症筆記寫進患者病歷;回饋頁上叫「就診紀錄」,可用評分量表評。</td></tr>
+    </tbody>
+  </table></div>
+  <p>另可為活動<b>標記學習成果</b>:第 1 步「新增學習成果」從機構資料庫或我的資料庫勾選,第 3 步再用每個項目的「選擇學習成果」掛到個別章節或題目上;漏選時用清單底部的「管理學習成果」就地補選,不必回第 1 步。</p>
+  <div class="vid" data-src="_影片/影片22_新增章節.mp4"><div class="vh"><span class="vn">影片 22</span><span>新增章節</span><span class="vd">3:38</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="18">&sect;2 章節的概念 0:18</a><a class="vt" data-t="75">&sect;6 新增章節 1:15</a><a class="vt" data-t="122">&sect;10 三點選單 2:02</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片23_新增內容章節.mp4"><div class="vh"><span class="vn">影片 23</span><span>新增內容章節</span><span class="vd">3:17</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="17">&sect;3 文字 0:17</a><a class="vt" data-t="56">&sect;7 媒體 0:56</a><a class="vt" data-t="82">&sect;9 問題 1:22</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片24_患者互動章節.mp4"><div class="vh"><span class="vn">影片 24</span><span>患者互動章節</span><span class="vd">4:47</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="28">&sect;3 四種互動章節 0:28</a><a class="vt" data-t="64">&sect;6 病史的三種類型 1:04</a><a class="vt" data-t="237">&sect;17 患者病歷 3:57</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片25_新增點選圖片題.mp4"><div class="vh"><span class="vn">影片 25</span><span>新增點選圖片題</span><span class="vd">4:50</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="39">&sect;5 什麼是點選圖片題 0:39</a><a class="vt" data-t="92">&sect;9 標記正確區域 1:32</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片29_為臨床案例活動標記學習成果.mp4"><div class="vh"><span class="vn">影片 29</span><span>為臨床案例活動標記學習成果</span><span class="vd">3:38</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="29">&sect;3 新增學習成果 0:29</a><a class="vt" data-t="137">&sect;11 掛到章節 2:17</a><a class="vt" data-t="166">&sect;14 管理學習成果 2:46</a></div><video controls preload="none" playsinline hidden></video></div>
+  <div class="note ok">
+    <div class="lb">建議</div>
+    <p style="margin-bottom:0">不是每個活動都要用到全部章節。<b>第一個活動只放:說明 + 病史章節 + 一題開放式問題 + 回饋。</b>等你熟了再加理學檢查、醫學檢查、患者病歷。章節太多,學生做不完,你也審不完。</p>
+  </div>
+  <div class="note ok">
+    <div class="lb">建議</div>
+    <p style="margin-bottom:0">每個活動先安排一個病史章節,再放理學檢查與醫學檢查,讓案例依基本的診療順序進行。平台不強制這個順序,但學生的推理需要。</p>
+  </div>
+
+  <h3 id="s5-2"><span class="n">5.2</span><span>回饋設定:最重要的一個決定</span></h3>
+  <p>四種模式,對應第 3 步頁面開頭的兩三個開關。這是你在整個平台上最重要的風險控管決定。</p>
+  <div class="tw"><table class="pick">
+    <thead><tr><th style="width:140px">模式</th><th style="width:230px">介面上怎麼設</th><th>什麼時候用</th><th style="width:70px">負擔</th></tr></thead>
+    <tbody>
+      <tr><td>AI 直接產出</td><td>活動回饋開 → 由 AI 產生 → 傳送前審核「否」</td><td>大班形成性練習。即時性最重要、風險最低的場合。學生一完成就收到。</td><td class="m">低</td></tr>
+      <tr><td>AI 先寫、教師審核</td><td>活動回饋開 → 由 AI 產生 → 傳送前審核「是」</td><td>正式評量、成績攸關、案例敏感時。學生要等你審完才看得到。</td><td class="m">中</td></tr>
+      <tr><td>教師手動撰寫</td><td>活動回饋開 → 由教師手動提供</td><td>小班、高階、需要細緻指導。</td><td class="m">高</td></tr>
+      <tr><td>關閉</td><td>活動回饋關</td><td>正式考試,或刻意保留到實體 debriefing 才討論。學生照樣作答,你事後仍讀得到內容。</td><td class="m">低</td></tr>
+    </tbody>
+  </table></div>
+  <p>開頭決定之後,頁面會依序列出活動裡每一個章節與題目,讓你逐項決定:</p>
+  <ul>
+    <li>每一項都有「項目回饋開啟」開關;要給回饋的就選一份或多份評分量表,只套用到那一項。</li>
+    <li>「更多設定」可選評分量表用完整或精簡方式顯示給學生,以及要不要顯示數字分數。</li>
+    <li>理學檢查與醫學檢查章節目前顯示「回饋尚不可用,即將推出」。</li>
+    <li>多項選擇題要補上各選項為什麼對或錯的說明與分數;開放式問題先選「簡短回答」(直接寫正確答案)或「段落回答」(用評分量表)。</li>
+    <li>最後是「就診紀錄」,也就是學生寫進患者病歷的內容,可掛量表或關閉。頁面底部顯示總分。</li>
+  </ul>
+  <div class="vid" data-src="_影片/影片26_為臨床案例活動設定回饋.mp4"><div class="vh"><span class="vn">影片 26</span><span>為臨床案例活動設定回饋</span><span class="vd">5:46</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="21">&sect;3 要不要給回饋 0:21</a><a class="vt" data-t="54">&sect;5 AI 或教師 0:54</a><a class="vt" data-t="80">&sect;7 傳送前審核 1:20</a><a class="vt" data-t="117">&sect;9 更多設定 1:57</a><a class="vt" data-t="147">&sect;11 逐項設定 2:27</a><a class="vt" data-t="214">&sect;15 多項選擇題 3:34</a><a class="vt" data-t="252">&sect;17 開放式問題 4:12</a><a class="vt" data-t="286">&sect;19 就診紀錄 4:46</a></div><video controls preload="none" playsinline hidden></video></div>
+  <div class="note ok">
+    <div class="lb">建議</div>
+    <p style="margin-bottom:0">導入節奏:<b>第一學期全部走「AI 先寫、教師審核」</b>,你會知道 AI 在你的科目上判得準不準。第二學期抽審兩成。穩定後再考慮開放直接產出。錯誤的回饋比沒有回饋更傷。</p>
+  </div>
+
+  <h3 id="s5-3"><span class="n">5.3</span><span>審核與傳送回饋</span></h3>
+  <p>選了「傳送前審核」的活動,學生做完會停在「你的教師將審核你的回答」。審核的入口在課程頁:<span class="ui">臨床案例活動</span>分頁 → 該活動的<span class="ui">複習</span> → <span class="ui">回饋審核</span>頁。左側分「已完成的學生」與「未開始或進行中的學生」;點一位學生,右側可以改每個量表項目的等級、在每個章節與就診紀錄下方寫「教師評論」,改完按「儲存回饋」。全部審完,按底部的「向 N 名學生傳送回饋」。</p>
+  <div class="note stop">
+    <div class="lb">不要這樣做</div>
+    <p style="margin-bottom:0">不要在還沒審完的時候按「向 N 名學生傳送回饋」。<b>它沒有確認框</b>,按下去所有已完成的學生立刻收到站內通知與 email,回不去。傳送之後仍可再改再傳,但學生已經看過第一版了。</p>
+  </div>
+  <div class="vid" data-src="_影片/影片27_提供與編輯學生回饋.mp4"><div class="vh"><span class="vn">影片 27</span><span>提供與編輯學生回饋</span><span class="vd">5:26</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="79">&sect;5 回饋審核頁 1:19</a><a class="vt" data-t="143">&sect;9 改等級 2:23</a><a class="vt" data-t="204">&sect;13 教師評論 3:24</a><a class="vt" data-t="225">&sect;16 儲存回饋 3:45</a><a class="vt" data-t="261">&sect;18 傳送 4:21</a><a class="vt" data-t="288">&sect;20 學生端 4:48</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3><span class="n">5.4</span><span>上線前必做:預覽</span></h3>
+  <p>用學生視角完整跑一次,包含收到回饋那一步。這一步不能省。清單上的「預覽」會先問一次:你的表現不會被儲存;若已啟用 AI 回饋,預覽結束會立即收到回饋。</p>
+  <div class="vid" data-src="_影片/影片28_預覽與編輯臨床案例活動.mp4"><div class="vh"><span class="vn">影片 28</span><span>預覽與編輯臨床案例活動</span><span class="vd">3:02</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="21">&sect;3 預覽 0:21</a><a class="vt" data-t="105">&sect;9 未互動就下一步的提醒 1:45</a><a class="vt" data-t="141">&sect;12 編輯模式 2:21</a></div><video controls preload="none" playsinline hidden></video></div>
+</section>
+
+<!-- ================= §6 ================= -->
+<section class="sec" id="s6">
+  <h2><span class="n">§6</span><span>編入課程</span></h2>
+  <p class="purpose">同一個活動放進不同的課程設定,就變成完全不同的教學用途。這是本平台投資報酬率最高的地方。</p>
+  <p>課程頁底下有五個分頁:公告、課程材料,以及三種可以指派給學生的內容 —— <span class="ui">臨床案例活動</span>(單一活動,各自完成)、<span class="ui">OSCE</span>(好幾個活動依順序、限時串成一場評量)、<span class="ui">小組活動</span>(學生分組完成同一個活動)。每個分頁右側都有「管理」。</p>
+  <div class="vid" data-src="_影片/影片30_將臨床案例活動指派到課程.mp4"><div class="vh"><span class="vn">影片 30</span><span>將臨床案例活動指派到課程</span><span class="vd">1:24</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="17">&sect;3 三種分頁 0:17</a><a class="vt" data-t="66">&sect;7 管理 1:06</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片31_將臨床案例活動加入課程.mp4"><div class="vh"><span class="vn">影片 31</span><span>將臨床案例活動加入課程</span><span class="vd">1:39</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="25">&sect;4 拖曳排序 0:25</a><a class="vt" data-t="37">&sect;5 新增臨床個案活動 0:37</a><a class="vt" data-t="92">&sect;11 學生收到通知 1:32</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3><span class="n">6.1</span><span>可設定的參數</span></h3>
+  <p>指派之後,在「管理」面板點該活動的「設定」,就是進階設定:</p>
+  <dl class="fields">
+    <dt>開放作答中</dt><dd>預設開。關掉就暫停,學生無法作答,直到你重新打開。</dd>
+    <dt>開放時間 / 截止時間</dt><dd>各自打開後選日期與時間。</dd>
+    <dt>計時器</dt><dd>限制完成活動的分鐘數,預設 20 分鐘。</dd>
+    <dt>允許重試</dt><dd>預設關,每個活動只能作答一次;打開後可設嘗試次數。</dd>
+  </dl>
+  <p>OSCE 也有同一組設定,差別是:每個案例本身就有作答分鐘數,所以沒有計時器;多了「額外嘗試」,可以只給某一位學生多一次機會。</p>
+  <p class="fine">官方說明頁另提到「答案公開」與「案例活動標題」(在患者名字下方加一行短標題)兩項;本次實測的介面上沒有看到,列此備查。</p>
+  <div class="vid" data-src="_影片/影片33_臨床案例活動的進階設定.mp4"><div class="vh"><span class="vn">影片 33</span><span>臨床案例活動的進階設定</span><span class="vd">2:27</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="29">&sect;3 設定在哪 0:29</a><a class="vt" data-t="35">&sect;4 開放作答中 0:35</a><a class="vt" data-t="53">&sect;6 開放與截止時間 0:53</a><a class="vt" data-t="67">&sect;7 計時器 1:07</a><a class="vt" data-t="76">&sect;8 允許重試 1:16</a><a class="vt" data-t="121">&sect;12 OSCE 的額外嘗試 2:01</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3><span class="n">6.2</span><span>同一個活動的三種身份</span></h3>
+  <p>照下表設定,一份教材可以同時支援學習路徑上的三個用途:</p>
+  <div class="tw"><table>
+    <thead><tr><th style="width:140px">參數</th><th>練習</th><th>形成性評量</th><th>總結性 / OSCE</th></tr></thead>
+    <tbody>
+      <tr><td><b>允許重試</b></td><td>開,不限或多次</td><td>開,1 到 2 次</td><td>關(只能作答一次)</td></tr>
+      <tr><td><b>計時器</b></td><td>不開</td><td>開,寬鬆</td><td>開,嚴格;OSCE 每案例自訂分鐘數</td></tr>
+      <tr><td><b>回饋</b></td><td>AI 直接產出</td><td>AI 先寫、教師審核</td><td>關閉,實體 debriefing 再談</td></tr>
+      <tr><td><b>開放與截止時間</b></td><td>不設</td><td>設截止</td><td>設開放與截止</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="n">6.3</span><span>OSCE:多站串接</span></h3>
+  <p>先在臨床案例活動頁準備好兩個以上的活動。然後:課程頁 → <span class="ui">OSCE</span>分頁 → 管理 → 新增 OSCE → 命名 → 在下拉清單連續勾選案例 → 拖曳排序(就是學生作答的順序)→ 每個案例設作答分鐘數(預設 10)→ 儲存。學生在課程的 OSCE 分頁按「開始」作答。</p>
+  <div class="note warn">
+    <div class="lb">請注意</div>
+    <p style="margin-bottom:0">指派單一活動會通知學生,<b>建立 OSCE 不會</b>。請自行公告。</p>
+  </div>
+  <div class="vid" data-src="_影片/影片32_將 OSCE 加入課程.mp4"><div class="vh"><span class="vn">影片 32</span><span>將 OSCE 加入課程</span><span class="vd">2:04</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="20">&sect;2 管理 0:20</a><a class="vt" data-t="43">&sect;5 選案例 0:43</a><a class="vt" data-t="61">&sect;7 排序 1:01</a><a class="vt" data-t="70">&sect;8 分鐘數 1:10</a><a class="vt" data-t="113">&sect;13 學生端 1:53</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片06_建立與編輯課程.mp4"><div class="vh"><span class="vn">影片 06</span><span>建立與編輯課程</span><span class="vd">3:42</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="124">&sect;9 編輯課程資訊 2:04</a><a class="vt" data-t="175">&sect;12 管理成員 2:55</a></div><video controls preload="none" playsinline hidden></video></div>
+</section>
+
+<!-- ================= §7 ================= -->
+<section class="sec" id="s7">
+  <h2><span class="n">§7</span><span>查看學生表現</span></h2>
+  <p class="purpose">課程分析是這個平台真正的新東西:它讓「學生怎麼想」這件事變成可以看見的資料。</p>
+
+  <h3><span class="n">7.1</span><span>你看得到什麼</span></h3>
+  <p>課程頁上方的「課程分析」是一張總表:每列一位學生,每欄一個活動,右側「總和」,底列「按活動平均」。「說明」定義了格子的四種狀態:未嘗試、已嘗試(有開回饋時表示回饋尚未發布)、分數、未完成。點任何一格進入詳細頁:</p>
+  <ul>
+    <li>活動摘要與表現摘要(問題、就診紀錄、互動三個部分)</li>
+    <li>患者資料與活動作者</li>
+    <li>各章節的作答與評分,<b>包括學生與 AI 患者的完整對話</b></li>
+    <li>就診紀錄全文</li>
+    <li>總表可「下載 CSV」,詳細頁可「下載 PDF」</li>
+  </ul>
+  <p class="fine">官方文件提到的作答時間與嘗試次數,本次未在畫面上驗證。</p>
+  <div class="vid" data-src="_影片/影片07_查看課程分析與學生表現.mp4"><div class="vh"><span class="vn">影片 07</span><span>查看課程分析與學生表現</span><span class="vd">2:51</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="15">&sect;2 課程分析 0:15</a><a class="vt" data-t="39">&sect;4 學生表現表 0:39</a><a class="vt" data-t="65">&sect;6 說明的四種狀態 1:05</a><a class="vt" data-t="75">&sect;7 詳細頁 1:15</a><a class="vt" data-t="146">&sect;13 下載 2:26</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3><span class="n">7.2</span><span>怎麼用這些資料</span></h3>
+  <p>最有價值的用法不是打分數,是<b>找出全班共同的缺口,把實體上課時間開在缺口上</b>。</p>
+  <p>實際做法:讓學生在實體課前完成活動,你在上課前掃過分析,找出「多數人都漏問的項目」與「典型的錯誤推理路徑」,課堂上直接針對這兩件事討論。這比按照原定教案講一遍有效得多。</p>
+  <div class="note warn">
+    <div class="lb">請注意</div>
+    <p style="margin-bottom:0">官方註記:更深入的教師洞察功能<b>仍在開發中,尚未全面部署</b>。目前的分析以分數、回饋與作答紀錄為主。學習成果標記所要支援的自動教學建議演算法也尚未上線。</p>
+  </div>
+</section>
+
+<!-- ================= §8 ================= -->
+<section class="sec" id="s8">
+  <h2><span class="n">§8</span><span>分享與複用</span></h2>
+  <p class="purpose">患者與評分量表都可以釋出到資料庫,讓其他教師複製使用。這是機構層級累積教材資產的方式。</p>
+  <div class="tw"><table>
+    <thead><tr><th style="width:160px">釋出範圍</th><th>誰看得到</th><th style="width:180px">適合</th></tr></thead>
+    <tbody>
+      <tr><td><b>機構資料庫</b></td><td>同機構的教師</td><td>院內共用教材、跨科複用</td></tr>
+      <tr><td><b>公共資料庫</b></td><td>所有使用平台的機構,不分國家</td><td>對外貢獻、國際交流</td></tr>
+    </tbody>
+  </table></div>
+  <p>患者在表單第 10 步「釋出」勾選,或在患者清單的「分享」選單裡點選;評分量表同理。<b>點下去就直接釋出,沒有第二次確認。</b>釋出到公共資料庫之前,再確認一次裡面沒有任何可以辨識真實患者的資料。</p>
+  <div class="vid" data-src="_影片/影片14_分享患者到機構或公共資料庫.mp4"><div class="vh"><span class="vn">影片 14</span><span>分享患者到機構或公共資料庫</span><span class="vd">1:40</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="25">&sect;4 第 10 步釋出 0:25</a><a class="vt" data-t="44">&sect;6 先確認機構規範 0:44</a><a class="vt" data-t="73">&sect;9 清單的分享選單 1:13</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片20_分享評分量表至資料庫.mp4"><div class="vh"><span class="vn">影片 20</span><span>分享評分量表至資料庫</span><span class="vd">1:42</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="31">&sect;4 評分量表的釋出 0:31</a></div><video controls preload="none" playsinline hidden></video></div>
+  <div class="note ok">
+    <div class="lb">建議</div>
+    <p style="margin-bottom:0">機構導入初期,請指定一位窗口<b>先在機構資料庫放入 2 到 3 位品質良好的範本患者與範本量表</b>。新教師從複製範本開始,比從零開始的完成率高很多,教材品質也比較一致。</p>
+  </div>
+</section>
+
+<!-- ================= §9 ================= -->
+<section class="sec" id="s9">
+  <h2><span class="n">§9</span><span>機構管理員專屬功能</span></h2>
+  <p class="purpose">一般教師可略過本節。若你是機構管理員,這一節是你的職責範圍。<span class="fine">本節依官方公開文件編寫,除 9.1 的實測註記外,未在管理員帳號上逐項驗證。</span></p>
+
+  <h3><span class="n">9.1</span><span>學習成果</span></h3>
+  <p>你可以建立並維護機構共用的學習成果清單,讓不同教師標記時使用一致的定義。實測(2026-09):教師端看到的學習成果分「機構資料庫」與「我的資料庫」兩個分頁,機構資料庫目前是空的,教師只能在我的資料庫自建(Bloom 動詞下拉 + 學習內容 + 情境)。</p>
+  <div class="note ok">
+    <div class="lb">建議</div>
+    <p style="margin-bottom:0">這一層可以直接對接既有的課程地圖與核心能力架構。<b>請由教學單位統一定義、先把機構資料庫填好,不要讓各科各自建立</b>,否則日後無法跨科分析。</p>
+  </div>
+  <div class="vid" data-src="_影片/影片29_為臨床案例活動標記學習成果.mp4"><div class="vh"><span class="vn">影片 29</span><span>為臨床案例活動標記學習成果</span><span class="vd">3:38</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="38">&sect;4 兩個資料庫 0:38</a><a class="vt" data-t="62">&sect;6 新增表單 1:02</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3><span class="n">9.2</span><span>資料匯出</span></h3>
+  <p>可申請九種結構化資料庫,以 CSV 格式寄送:</p>
+  <div class="tw"><table>
+    <thead><tr><th style="width:36px">#</th><th style="width:230px">資料庫</th><th>內容</th></tr></thead>
+    <tbody>
+      <tr><td class="m">1</td><td>Users</td><td>機構所有學生與教師</td></tr>
+      <tr><td class="m">2</td><td>Courses</td><td>機構內課程</td></tr>
+      <tr><td class="m">3</td><td>Patients(基本)</td><td>人口學、病史、行為設定</td></tr>
+      <tr><td class="m">4</td><td>Patients(臨床)</td><td>既往紀錄、理學檢查、醫學檢查:就診、抽血、影像、處置、藥物</td></tr>
+      <tr><td class="m">5</td><td>Rubrics</td><td>教師建立的評分量表</td></tr>
+      <tr><td class="m">6</td><td>Clinical Case Activities</td><td>教師建立的臨床案例活動</td></tr>
+      <tr><td class="m">7</td><td>學生表現(作答)</td><td>題目、量表判定、就診紀錄、活動回饋</td></tr>
+      <tr><td class="m">8</td><td>學生表現(請求)</td><td>學生要求的理學檢查與醫學檢查紀錄</td></tr>
+      <tr><td class="m">9</td><td>學生表現(對話)</td><td><b>學生與 AI 患者的完整對話逐字稿</b></td></tr>
+    </tbody>
+  </table></div>
+  <h4>申請流程</h4>
+  <ol>
+    <li>機構管理員從管理帳號提出申請。</li>
+    <li>系統將報表排入佇列進行安全處理。</li>
+    <li>完成後自動寄送 email,附上 CSV 檔與「套用了哪些篩選條件」的說明。</li>
+  </ol>
+  <p>多個資料庫可依研究需要合併分析。建議先閱讀各資料庫的欄位說明,了解結構、格式與包含的變項。</p>
+  <div class="note stop">
+    <div class="lb">不要這樣做</div>
+    <p style="margin-bottom:0">官方明文規定:<b>使用學生資料進行研究,須事先取得 IRB 或倫理委員會核准。</b>這不是建議事項。若打算把試辦成果發表,IRB 必須在<b>資料收集之前</b>送出,事後補件通常無法補救。</p>
+  </div>
+
+  <h3><span class="n">9.3</span><span>資安與法遵文件</span></h3>
+  <p>官方技術文件頁提供四份文件,送院內資安審查時可直接調用:</p>
+  <dl class="fields">
+    <dt>Terms of Service</dt><dd>服務條款</dd>
+    <dt>Privacy Notice</dt><dd>隱私聲明</dd>
+    <dt>HECVAT</dt><dd>高等教育雲端廠商評估表,資安審查用</dd>
+    <dt>VPAT</dt><dd>無障礙符合性報告</dd>
+  </dl>
+</section>
+
+<!-- ================= §10 ================= -->
+<section class="sec" id="s10">
+  <h2><span class="n">§10</span><span>已知限制</span></h2>
+  <p class="purpose">以下限制一部分是官方在自家使用案例中主動寫出來的,一部分是本院試作時看到的。設計活動前請先讀過,可以避免把平台用在它不擅長的地方。</p>
+
+  <h3><span class="n">10.1</span><span>技術限制</span></h3>
+  <ul>
+    <li>文字與語音<b>無法完整模擬溝通障礙本身</b>。語言治療類課程需特別留意。</li>
+    <li>非英語的回應曾出現<b>語言細節問題</b>。有西班牙文課程回報此狀況;本院試作時 AI 產生的患者資料曾出現粵語,繁體中文的案例一律需要在地校對。</li>
+    <li>語音互動的患者若在 14 歲以下,會自動改用文字。</li>
+    <li>理學檢查與醫學檢查章節的回饋目前「尚不可用」;醫學檢查結果的「較大延遲」與「顯示檢查費用」標示即將推出。</li>
+    <li>深入的教師洞察功能<b>仍在開發中</b>;學習成果標記所支援的分析演算法<b>尚未上線</b>。</li>
+  </ul>
+
+  <h3><span class="n">10.2</span><span>教學限制</span></h3>
+  <ul>
+    <li>AI 互動<b>無法複製社會情緒與人際面向</b>。多個職類的核心能力正在於此。</li>
+    <li>本平台的定位是<b>標準化病人之前的橋梁</b>,不是替代品。合理的序列是:教室準備 → AI 模擬患者 → 標準化病人 → 真實場域。</li>
+    <li>教師的<b>數位素養落差</b>是實際的導入障礙,需要配套的師資培訓。</li>
+  </ul>
+
+  <h3><span class="n">10.3</span><span>證據限制</span></h3>
+  <div class="note warn">
+    <div class="lb">請注意</div>
+    <p>官方列出的四篇同儕審查出版品皆為 2024 年,<b>沒有一篇評估本平台的學習成效</b>。十篇教師使用案例全部是自陳報告,無對照組、無前後測比較,發表於官方網站而非期刊。</p>
+    <p style="margin-bottom:0">目前的證據狀態是:<b>可行性與可接受度良好,學習成效未知。</b>導入時請據此設定期待,並考慮同步規劃自己的成效評估。</p>
+  </div>
+
+  <h3><span class="n">10.4</span><span>中文介面的已知瑕疵</span></h3>
+  <p>看到下列文字不是你操作錯,是平台的翻譯還沒改好(2026 年 9 月,已回報 Stanford):</p>
+  <ul>
+    <li>內容章節的圖片欄是簡體字「图片(可选)/添加图片」。</li>
+    <li>複製患者的確認框副標題、課程管理面板的說明是粵語(「你可以喺…」「呢個課程嘅…」)。</li>
+    <li>心電圖圖片清單與「新增其他」的選項有機器翻譯錯誤(帕金森白綜合徵、MRI磁共振共振、心臟超音波重複出現)。</li>
+    <li>新增患者第 3 步標籤「配飾和麵部特徵」是錯字;歸檔對話框寫「病人」「評分規準」,其他地方是「患者」「評分量表」。</li>
+    <li>官方 YouTube 的繁中字幕把 library 譯成「庫」(我的庫、機構庫),介面是「資料庫」。</li>
+  </ul>
+</section>
+
+<!-- ================= §11 ================= -->
+<section class="sec" id="s11">
+  <h2><span class="n">§11</span><span>疑難排解</span></h2>
+
+  <div class="tw"><table>
+    <thead><tr><th style="width:240px">狀況</th><th>處理方式</th></tr></thead>
+    <tbody>
+      <tr><td><b>AI 患者只回「I do not understand」</b></td><td>患者語言是英語。到患者編輯的第 2 步改成繁體中文。從公共資料庫複製來的患者幾乎都要改。</td></tr>
+      <tr><td><b>改了患者或量表,學生看到的還是舊的</b></td><td>快照規則:指派時已複製一份。要更新得在課程「管理」刪除該活動再重新指派,而刪除會刪掉學生的全部嘗試。先改好再指派。</td></tr>
+      <tr><td><b>複製患者後「我的資料庫」沒出現</b></td><td>畫面不會有提示。重新整理頁面就會看到副本。</td></tr>
+      <tr><td><b>新增患者第 1 步按「下一步」沒反應</b></td><td>「患者用途」至少要 10 個字。</td></tr>
+      <tr><td><b>活動第 3 步找不到剛建的評分量表</b></td><td>草稿量表不會列出。回評分量表頁把它完成。</td></tr>
+      <tr><td><b>學生說沒收到 OSCE 通知</b></td><td>建立 OSCE 不發通知(指派單一活動才會)。自行公告。</td></tr>
+      <tr><td><b>AI 患者講出不合理的內容</b></td><td>回到患者設定檢查病史是否有矛盾之處,特別是 AI 生成或文件匯入的段落。必要時在第 9 步「行為」補充明確的行為與揭露規則。</td></tr>
+      <tr><td><b>AI 回饋判錯</b></td><td>多半是量表項目寫得太抽象。改寫成 <code>0 / 1</code> 的可觀察行為。回饋可在回饋審核頁改完再傳。</td></tr>
+      <tr><td><b>學生反映不知道要做什麼</b></td><td>活動說明寫得不夠具體。使用格式編輯功能,把任務拆成編號步驟。</td></tr>
+      <tr><td><b>學生靠反覆嘗試而非推理</b></td><td>進階設定改為關閉「允許重試」、打開「計時器」。練習與評量請使用不同設定。</td></tr>
+      <tr><td><b>患者講話不像本地人</b></td><td>案例由本地教師撰寫初稿,不要直接翻譯國外案例。第一版務必找學生試跑並收集語感回饋。</td></tr>
+      <tr><td><b>建置太花時間,做不完</b></td><td>從資料庫複製而非從零手建。第一個活動只放四塊。目標是走完流程,不是做出完美教材。</td></tr>
+      <tr><td><b>忘記密碼、帳號問題</b></td><td>見影片 02 變更登入密碼;或聯繫機構管理員與計畫主持人。</td></tr>
+      <tr><td><b>需要功能建議或回報問題</b></td><td>右上角頭像 → 聯絡我們,填訊息、可附截圖,按「傳送」;Stanford 會以 email 回覆(影片 03)。或直接寄 <code>clinicalmindai@stanford.edu</code>。</td></tr>
+    </tbody>
+  </table></div>
+  <div class="vid" data-src="_影片/影片02_變更登入密碼.mp4"><div class="vh"><span class="vn">影片 02</span><span>變更登入密碼</span><span class="vd">0:52</span><a class="vt" data-t="0">從頭播放</a></div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片03_聯絡支援團隊.mp4"><div class="vh"><span class="vn">影片 03</span><span>聯絡支援團隊</span><span class="vd">1:14</span><a class="vt" data-t="0">從頭播放</a><a class="vt" data-t="19">&sect;3 聯絡我們 0:19</a><a class="vt" data-t="32">&sect;5 訊息 0:32</a><a class="vt" data-t="47">&sect;7 附檔 0:47</a><a class="vt" data-t="57">&sect;9 傳送 0:57</a></div><video controls preload="none" playsinline hidden></video></div>
+
+  <h3><span class="n">11.1</span><span>學生告知</span></h3>
+  <p>建議在活動開始前主動告知學生四件事:</p>
+  <ol>
+    <li>他們正在與 AI 互動,不是真人。</li>
+    <li>對話全文會被記錄,教師看得到完整對話、作答內容與就診紀錄。</li>
+    <li>回饋是 AI 產生的、教師審過的,還是教師撰寫的;回饋一經傳送,他們會同時收到 email。</li>
+    <li>資料的使用範圍:僅限課程,或可能用於研究。</li>
+  </ol>
+</section>
+
+<!-- ================= 附錄 ================= -->
+<section class="sec" id="a">
+  <h2><span class="n">附錄 A</span><span>教學影片索引</span></h2>
+  <p class="purpose">33 支繁體中文影片,2026 年 9 月依實際介面錄製,字幕已內嵌。以下依<b>任務</b>排列;每支附英文原片連結,方便對照。</p>
+
+  <h4>第一次使用先看這五支(約 24 分鐘)</h4>
+<div class="vid" data-src="_影片/影片05_平台操作總覽.mp4"><div class="vh"><span class="vn">影片 05</span><span>平台操作總覽</span><span class="vd">2:07</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/Tr0i7RW8tAM" target="_blank" rel="noopener">How to Use the Clinical Mind AI Platform</a></span></div><div class="vp">導覽列四頁的邏輯:課程、患者、評分量表、臨床案例活動。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片16_建立評分量表的好做法.mp4"><div class="vh"><span class="vn">影片 16</span><span>建立評分量表的好做法</span><span class="vd">2:23</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/8IJ8nOApbPY" target="_blank" rel="noopener">Good Practices When Creating a Rubric</a></span></div><div class="vp">寫好評分量表的原則。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片08_建立新患者.mp4"><div class="vh"><span class="vn">影片 08</span><span>建立新患者</span><span class="vd">11:00</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/8sOd7mgh810" target="_blank" rel="noopener">Creating a New Patient</a></span></div><div class="vp">新增患者表單 10 步,從規格到釋出,含 AI 頭像與各種檢查。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片21_建立臨床案例活動的步驟.mp4"><div class="vh"><span class="vn">影片 21</span><span>建立臨床案例活動的步驟</span><span class="vd">5:44</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/z7aV6ZQhtyA" target="_blank" rel="noopener">Steps to Create a Clinical Case Activity</a></span></div><div class="vp">建立臨床案例活動的四步:資訊、活動、回饋、釋出。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片26_為臨床案例活動設定回饋.mp4"><div class="vh"><span class="vn">影片 26</span><span>為臨床案例活動設定回饋</span><span class="vd">5:46</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/pQ93_iQIZdE" target="_blank" rel="noopener">Adding Feedback to a Clinical Case Activity</a></span></div><div class="vp">第 3 步回饋的完整設定流程。</div><video controls preload="none" playsinline hidden></video></div>
+
+  <h4>帳號與環境</h4>
+<div class="vid" data-src="_影片/影片01_教師帳號初次設定.mp4"><div class="vh"><span class="vn">影片 01</span><span>教師帳號初次設定</span><span class="vd">1:25</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/sJH7zCzXAe8" target="_blank" rel="noopener">Setting Up Your Instructor Account</a></span></div><div class="vp">收到邀請信到第一次登入。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片02_變更登入密碼.mp4"><div class="vh"><span class="vn">影片 02</span><span>變更登入密碼</span><span class="vd">0:52</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/4oAw3Gd9hyw" target="_blank" rel="noopener">Changing Your Password</a></span></div><div class="vp">從個人選單變更密碼。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片03_聯絡支援團隊.mp4"><div class="vh"><span class="vn">影片 03</span><span>聯絡支援團隊</span><span class="vd">1:14</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/SqInfSYl8ko" target="_blank" rel="noopener">Contacting the Clinical Mind AI Team</a></span></div><div class="vp">頭像選單的「聯絡我們」表單:訊息、附截圖、傳送。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片04_使用多媒體資料庫.mp4"><div class="vh"><span class="vn">影片 04</span><span>使用多媒體資料庫</span><span class="vd">2:53</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/UKKLeEtAOec" target="_blank" rel="noopener">Using the Multimedia Library</a></span></div><div class="vp">多媒體資料庫的三個分頁與八個分類,搜尋、預覽、YouTube 連結。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片05_平台操作總覽.mp4"><div class="vh"><span class="vn">影片 05</span><span>平台操作總覽</span><span class="vd">2:07</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/Tr0i7RW8tAM" target="_blank" rel="noopener">How to Use the Clinical Mind AI Platform</a></span></div><div class="vp">導覽列四頁的邏輯:課程、患者、評分量表、臨床案例活動。</div><video controls preload="none" playsinline hidden></video></div>
+
+  <h4>建立與維護患者</h4>
+<div class="vid" data-src="_影片/影片08_建立新患者.mp4"><div class="vh"><span class="vn">影片 08</span><span>建立新患者</span><span class="vd">11:00</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/8sOd7mgh810" target="_blank" rel="noopener">Creating a New Patient</a></span></div><div class="vp">新增患者表單 10 步,從規格到釋出,含 AI 頭像與各種檢查。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片09_從資料庫複製患者.mp4"><div class="vh"><span class="vn">影片 09</span><span>從資料庫複製患者</span><span class="vd">4:13</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/--vaEzn16ro" target="_blank" rel="noopener">Copying a Patient from the Library</a></span></div><div class="vp">從機構或公共資料庫複製患者,以及一定要改的患者語言。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片10_用檔案建立患者.mp4"><div class="vh"><span class="vn">影片 10</span><span>用檔案建立患者</span><span class="vd">3:28</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/9T4_yc9s0qY" target="_blank" rel="noopener">Creating a Patient from a Document</a></span></div><div class="vp">用檔案填寫患者:上傳教案讓 AI 預填。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片11_用 AI 建立患者病史.mp4"><div class="vh"><span class="vn">影片 11</span><span>用 AI 建立患者病史</span><span class="vd">2:23</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/zdF6OfLcrRQ" target="_blank" rel="noopener">Creating a Patient Using AI Assistance</a></span></div><div class="vp">先填必填與主訴,再用「使用 AI 完成」補完病史。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片12_新增自訂理學檢查或醫學檢查.mp4"><div class="vh"><span class="vn">影片 12</span><span>新增自訂理學檢查或醫學檢查</span><span class="vd">1:59</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/aJIqiHRFMDg" target="_blank" rel="noopener">Adding Custom Physical Exams or Medical Tests</a></span></div><div class="vp">在理學檢查與醫學檢查裡新增「其他」自訂項目。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片13_編輯已建立的患者資料.mp4"><div class="vh"><span class="vn">影片 13</span><span>編輯已建立的患者資料</span><span class="vd">2:02</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/2rVrp3x3nNA" target="_blank" rel="noopener">Editing Patient Details</a></span></div><div class="vp">編輯患者,以及快照規則與刪除指派的代價。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片14_分享患者到機構或公共資料庫.mp4"><div class="vh"><span class="vn">影片 14</span><span>分享患者到機構或公共資料庫</span><span class="vd">1:40</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/nKcBSV8mPRk" target="_blank" rel="noopener">Sharing a Patient to the Institutional or Public Library</a></span></div><div class="vp">釋出到機構資料庫或公共資料庫。</div><video controls preload="none" playsinline hidden></video></div>
+
+  <h4>建立與維護評分量表</h4>
+<div class="vid" data-src="_影片/影片15_建立新評分量表.mp4"><div class="vh"><span class="vn">影片 15</span><span>建立新評分量表</span><span class="vd">1:54</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/V9pxZhkHCkk" target="_blank" rel="noopener">Creating a New Rubric</a></span></div><div class="vp">新增評分量表:項目、等級、完成。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片16_建立評分量表的好做法.mp4"><div class="vh"><span class="vn">影片 16</span><span>建立評分量表的好做法</span><span class="vd">2:23</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/8IJ8nOApbPY" target="_blank" rel="noopener">Good Practices When Creating a Rubric</a></span></div><div class="vp">寫好評分量表的原則。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片17_用評分量表工具製作檢核表.mp4"><div class="vh"><span class="vn">影片 17</span><span>用評分量表工具製作檢核表</span><span class="vd">1:58</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/Ma3Pq7rKa88" target="_blank" rel="noopener">Creating a Checklist Using the Rubric Tool</a></span></div><div class="vp">用兩級量表做檢核表。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片18_從資料庫複製評分量表.mp4"><div class="vh"><span class="vn">影片 18</span><span>從資料庫複製評分量表</span><span class="vd">2:06</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/t43iwodBbvI" target="_blank" rel="noopener">Copying a Rubric from the Library</a></span></div><div class="vp">從資料庫複製評分量表。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片19_編輯評分量表細節.mp4"><div class="vh"><span class="vn">影片 19</span><span>編輯評分量表細節</span><span class="vd">1:41</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/D17qDHTfQj4" target="_blank" rel="noopener">Editing Rubric Details</a></span></div><div class="vp">編輯評分量表細節。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片20_分享評分量表至資料庫.mp4"><div class="vh"><span class="vn">影片 20</span><span>分享評分量表至資料庫</span><span class="vd">1:42</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/KdzvOzplpZw" target="_blank" rel="noopener">Sharing a Rubric to the Institutional or Public Library</a></span></div><div class="vp">評分量表的釋出。</div><video controls preload="none" playsinline hidden></video></div>
+
+  <h4>組裝臨床案例活動</h4>
+<div class="vid" data-src="_影片/影片21_建立臨床案例活動的步驟.mp4"><div class="vh"><span class="vn">影片 21</span><span>建立臨床案例活動的步驟</span><span class="vd">5:44</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/z7aV6ZQhtyA" target="_blank" rel="noopener">Steps to Create a Clinical Case Activity</a></span></div><div class="vp">建立臨床案例活動的四步:資訊、活動、回饋、釋出。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片22_新增章節.mp4"><div class="vh"><span class="vn">影片 22</span><span>新增章節</span><span class="vd">3:38</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/eoQC0bazaDs" target="_blank" rel="noopener">Adding Sections to a Clinical Case Activity</a></span></div><div class="vp">章節的概念與新增、排序、刪除。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片23_新增內容章節.mp4"><div class="vh"><span class="vn">影片 23</span><span>新增內容章節</span><span class="vd">3:17</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/DvGl-MHOKiA" target="_blank" rel="noopener">Adding Empty Sections to a Clinical Case Activity</a></span></div><div class="vp">內容章節:文字、媒體、問題。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片24_患者互動章節.mp4"><div class="vh"><span class="vn">影片 24</span><span>患者互動章節</span><span class="vd">4:47</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/TuE0W-4sy-g" target="_blank" rel="noopener">Adding Interaction Sections to a Clinical Case Activity</a></span></div><div class="vp">四種患者互動章節與互動模式、結果時序。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片25_新增點選圖片題.mp4"><div class="vh"><span class="vn">影片 25</span><span>新增點選圖片題</span><span class="vd">4:50</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/J9amSZOIy_g" target="_blank" rel="noopener">Adding a Click-in-Picture Question</a></span></div><div class="vp">點選圖片題:上傳影像、手繪標記正確區域。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片29_為臨床案例活動標記學習成果.mp4"><div class="vh"><span class="vn">影片 29</span><span>為臨床案例活動標記學習成果</span><span class="vd">3:38</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/nlkWX-xodb8" target="_blank" rel="noopener">Adding Learning Outcomes to an Activity</a></span></div><div class="vp">學習成果:兩個資料庫、勾選、掛到章節與題目。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片28_預覽與編輯臨床案例活動.mp4"><div class="vh"><span class="vn">影片 28</span><span>預覽與編輯臨床案例活動</span><span class="vd">3:02</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/T9G1pdQuhZ4" target="_blank" rel="noopener">Previewing and Editing a Clinical Case Activity</a></span></div><div class="vp">從學生視角預覽,以及編輯已建立的活動。</div><video controls preload="none" playsinline hidden></video></div>
+
+  <h4>回饋</h4>
+<div class="vid" data-src="_影片/影片26_為臨床案例活動設定回饋.mp4"><div class="vh"><span class="vn">影片 26</span><span>為臨床案例活動設定回饋</span><span class="vd">5:46</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/pQ93_iQIZdE" target="_blank" rel="noopener">Adding Feedback to a Clinical Case Activity</a></span></div><div class="vp">第 3 步回饋的完整設定流程。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片27_提供與編輯學生回饋.mp4"><div class="vh"><span class="vn">影片 27</span><span>提供與編輯學生回饋</span><span class="vd">5:26</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/QVjfEy40PM4" target="_blank" rel="noopener">Providing and Editing Feedback for Students</a></span></div><div class="vp">回饋審核頁:改等級、教師評論、儲存、傳送、學生端。</div><video controls preload="none" playsinline hidden></video></div>
+
+  <h4>課程與指派</h4>
+<div class="vid" data-src="_影片/影片06_建立與編輯課程.mp4"><div class="vh"><span class="vn">影片 06</span><span>建立與編輯課程</span><span class="vd">3:42</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/6N4G8u_ysPQ" target="_blank" rel="noopener">Creating and Editing a Course</a></span></div><div class="vp">我的課程、申請建課、主講教師編輯課程資訊與成員。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片30_將臨床案例活動指派到課程.mp4"><div class="vh"><span class="vn">影片 30</span><span>將臨床案例活動指派到課程</span><span class="vd">1:24</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/kk9ph-8QPDw" target="_blank" rel="noopener">Assigning a Clinical Case Activity to a Course</a></span></div><div class="vp">課程的三種可指派內容與管理面板。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片31_將臨床案例活動加入課程.mp4"><div class="vh"><span class="vn">影片 31</span><span>將臨床案例活動加入課程</span><span class="vd">1:39</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/YuDmtEghzns" target="_blank" rel="noopener">Adding Individual Cases to a Course</a></span></div><div class="vp">把臨床案例活動加入課程。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片32_將 OSCE 加入課程.mp4"><div class="vh"><span class="vn">影片 32</span><span>將 OSCE 加入課程</span><span class="vd">2:04</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/AsSebO-m6sQ" target="_blank" rel="noopener">Adding OSCEs to a Course</a></span></div><div class="vp">建立 OSCE:選案例、排序、分鐘數。</div><video controls preload="none" playsinline hidden></video></div>
+<div class="vid" data-src="_影片/影片33_臨床案例活動的進階設定.mp4"><div class="vh"><span class="vn">影片 33</span><span>臨床案例活動的進階設定</span><span class="vd">2:27</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/m8j3Kqu-_NY" target="_blank" rel="noopener">Advanced Settings for Clinical Case Activities in a Course</a></span></div><div class="vp">進階設定:開放作答中、時間、計時器、允許重試、額外嘗試。</div><video controls preload="none" playsinline hidden></video></div>
+
+  <h4>查看成效</h4>
+<div class="vid" data-src="_影片/影片07_查看課程分析與學生表現.mp4"><div class="vh"><span class="vn">影片 07</span><span>查看課程分析與學生表現</span><span class="vd">2:51</span><a class="vt" data-t="0">從頭播放</a><span class="yt">英文原片:<a href="https://youtu.be/mSmuvsQmnsU" target="_blank" rel="noopener">Viewing Course Analytics and Student Performance</a></span></div><div class="vp">課程分析總表、四種狀態、詳細頁、下載。</div><video controls preload="none" playsinline hidden></video></div>
+
+  <p class="ref">影片為 2026 年 9 月實機錄製,字幕已內嵌。介面若改版,以實際畫面為準。英文原片可於官方網站 Tutorials 頁取得。</p>
+</section>
+
+<section class="sec" id="a2">
+  <h2><span class="n">附錄 B</span><span>名詞對照</span></h2>
+  <p class="purpose">中文欄是繁體中文介面上的實際用詞,本手冊與影片一律照用。看英文原片或官方文件時請對照。</p>
+  <div class="tw"><table>
+    <thead><tr><th style="width:230px">英文介面 / 官方文件</th><th style="width:170px">中文介面實際用詞</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td class="m">Patient</td><td>患者</td><td>可對話的虛擬患者。四層結構的第 1 層。</td></tr>
+      <tr><td class="m">Rubric</td><td>評分量表</td><td>評分準則。檢核表也用這個工具製作。</td></tr>
+      <tr><td class="m">Clinical Case Activity</td><td>臨床案例活動</td><td>學生實際操作的單位。介面上偶見「臨床個案活動」。</td></tr>
+      <tr><td class="m">Course</td><td>課程(我的課程)</td><td>活動的容器,決定執行條件。</td></tr>
+      <tr><td class="m">Section</td><td>章節</td><td>活動內的積木,分內容章節與患者互動章節。</td></tr>
+      <tr><td class="m">Interaction Section</td><td>患者互動章節</td><td>病史、理學檢查、醫學檢查、患者病歷四種。</td></tr>
+      <tr><td class="m">Open-ended Question</td><td>開放式問題</td><td>簡短回答或段落回答。</td></tr>
+      <tr><td class="m">Click-in-Picture Question</td><td>點選圖片題</td><td>在影像上點出位置的題型。</td></tr>
+      <tr><td class="m">Visit Note</td><td>就診紀錄</td><td>學生寫進患者病歷的內容。</td></tr>
+      <tr><td class="m">Learning Outcome</td><td>學習成果</td><td>可掛到個別章節與題目,對接課程地圖。</td></tr>
+      <tr><td class="m">Library</td><td>資料庫</td><td>我的資料庫、機構資料庫、公共資料庫。</td></tr>
+      <tr><td class="m">Multimedia Library</td><td>多媒體資料庫</td><td>心電圖、影像、聽診音等素材庫。</td></tr>
+      <tr><td class="m">Course Analytics</td><td>課程分析</td><td>學生表現資料。</td></tr>
+      <tr><td class="m">Complete with AI</td><td>使用 AI 完成</td><td>依簡短摘要生成病史的功能。</td></tr>
+      <tr><td class="m">Publish</td><td>釋出</td><td>患者表單第 10 步;清單上叫「分享」。</td></tr>
+      <tr><td class="m">Manage</td><td>管理</td><td>課程各分頁右側的指派面板。</td></tr>
+      <tr><td class="m">Review</td><td>複習(回饋審核)</td><td>課程頁活動列的按鈕,進入回饋審核頁。</td></tr>
+      <tr><td class="m">Group Activity</td><td>小組活動</td><td>課程的第三種可指派內容。</td></tr>
+      <tr><td class="m">OSCE</td><td>OSCE</td><td>多站串接的評量形式。</td></tr>
+      <tr><td class="m">Institutional Admin</td><td>機構管理員</td><td>管理機構帳號、教材與資料的角色。</td></tr>
+      <tr><td class="m">CMind Atrium</td><td>CMind Atrium</td><td>導覽列第五項,本手冊未涉及。</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sec" id="a3">
+  <h2><span class="n">附錄 C</span><span>官方資源與聯絡</span></h2>
+  <dl class="fields">
+    <dt>資訊網站</dt><dd><a href="https://clinicalmindai.stanford.edu/">clinicalmindai.stanford.edu</a> —— 功能說明、教學影片、教師案例、研究</dd>
+    <dt>登入平台</dt><dd><a href="https://www.clinicalmindai.com/">clinicalmindai.com</a></dd>
+    <dt>申請試用</dt><dd><a href="https://www.clinicalmindai.com/request-demo">clinicalmindai.com/request-demo</a> —— 4 週教師試用帳號</dd>
+    <dt>官方信箱</dt><dd><code>clinicalmindai@stanford.edu</code></dd>
+    <dt>教學影片</dt><dd><a href="https://clinicalmindai.stanford.edu/platform/tutorials">Tutorials 頁</a>(英文原片)</dd>
+    <dt>技術文件</dt><dd><a href="https://clinicalmindai.stanford.edu/platform/technical-documentation">Technical Documentation 頁</a> —— 內含服務條款、隱私聲明、HECVAT、VPAT</dd>
+    <dt>資料匯出說明</dt><dd><a href="https://clinicalmindai.stanford.edu/platform/institutional-data-exports">Institutional Data Exports 頁</a></dd>
+    <dt>教師案例</dt><dd><a href="https://clinicalmindai.stanford.edu/platform/faculty-stories">Faculty Stories 頁</a> —— 他校的實際用法</dd>
+    <dt>正式訓練</dt><dd><a href="https://clinicalmindai.stanford.edu/platform/training">Training 頁</a> —— 史丹佛 Technology Training 定期開課</dd>
+  </dl>
+  <div class="note">
+    <div class="lb">院內窗口</div>
+    <p>本院為合作機構。帳號申請、教材諮詢與本手冊的意見,請先聯繫計畫主持人,不需自行對外申請。</p>
+    <p style="margin-bottom:0"><b>林冠勳 醫師</b> · 國防醫學院 / 三軍總醫院 · 聯絡信箱:<span style="background:var(--warn-soft);padding:0 6px">〔待填〕</span></p>
+  </div>
+</section>
+
+<p class="endnote">本手冊 v1 編寫自 Clinical Mind AI 官方網站於 2026 年 9 月的公開資訊,並整合十篇官方教師使用案例中的實務經驗;v2(2026-09-17)依 9 月 12 日至 17 日在平台上的實機驗證修訂用詞與事實,並配套 33 支繁體中文教學影片。非史丹佛官方文件,未經官方審閱。平台功能持續更新,操作介面以實際畫面為準。標示為「建議」的內容為編寫者的實務判斷。</p>
+
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+  document.addEventListener('click', function(ev){
+    var a = ev.target.closest('.vid .vt'); if(!a) return;
+    ev.preventDefault();
+    var box = a.closest('.vid'), video = box.querySelector('video'), t = parseFloat(a.getAttribute('data-t')||'0');
+    if(!video.getAttribute('src')){ video.setAttribute('src', box.getAttribute('data-src')); }
+    video.hidden = false;
+    var seek = function(){ try{ video.currentTime = t; }catch(e){} video.play().catch(function(){}); };
+    if(video.readyState >= 1) seek(); else video.addEventListener('loadedmetadata', seek, {once:true});
+    if(video.readyState < 1) video.load();
+  });
+})();
+</script>
